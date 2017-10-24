@@ -3,15 +3,23 @@
 ### User table
 * id                int
 * facebook_token    string
-* name              string \*optional
-* email             string \*optional
+* name              string \*comes from facebook
+* email             string \*comes from facebook
 
-### Bets table
+### User points wallet
+* id                int
+* user_id           int
+* amount            int
+
+### Admin table
+* id                int
+* user_id           int  
+
+### Open Bets table
 * id                int
 * user_id           int  foreign key
-* player_id         int  foreign key
-* tournament_id     int  foreign key
-* points_amount     int
+* match_id 2        int  foreign key
+* points_amount     int  \* bet amount
 
 ### Players table
 * id                int
@@ -20,11 +28,13 @@
 ### Match table
 * id                int
 * tournament_id     int  foreign key
-
+* player1_id        int  foreign key
+* player2_id        int  foreign key
+* winner_id         int  foreign key
 
 ### BetsHistory table
 * id                int
-* amount            int
+* amount            int  
 * player_id         int  foreign key
 * opponent_id       int  foreign key
 * won_bet           bool \*do we need this?

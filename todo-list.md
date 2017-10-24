@@ -1,4 +1,4 @@
-# melee-bet project To-do list
+# Melee-bet project To-do list
 
 1. Build login interface
   1. Build backend login endpoint
