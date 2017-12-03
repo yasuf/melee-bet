@@ -1,0 +1,39 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #222;
+  height: 18px;
+  padding: 20px;
+  color: white;
+  text-align: left;
+}
+
+.fb-login {
+  background: #3b5998;
+  color: white;
+  height: 30px;
+  width: 220px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.fb-logo {
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.logo {
+  -webkit-margin-before: 0;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

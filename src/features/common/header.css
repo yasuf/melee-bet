@@ -1,0 +1,10 @@
+.nav-item {
+  display: inline-block;
+  float: right;
+}
+.logo {
+  display: inline-block;
+}
+.logout {
+  cursor: pointer;
+}
