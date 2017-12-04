@@ -14,6 +14,7 @@ const fakeRoundData = [
   { playerTop: { tag: 'Mango', isWinner: true }, playerBottom: { tag: "Armada", isWinner: false } },
   { playerTop: { tag: 'Mango', isWinner: true }, playerBottom: { tag: "Armada", isWinner: false } }
 ]
+
 const fakeRoundData2 = [
   { playerTop: { tag: 'Mango', isWinner: true }, playerBottom: { tag: "Armada", isWinner: false } },
   { playerTop: { tag: 'Mango', isWinner: true }, playerBottom: { tag: "Armada", isWinner: false } },
@@ -40,7 +41,7 @@ class DashboardContainer extends Component {
           <RoundGenerator 
             matches={ fakeRoundData3 }
           />
-          
+
         </main>
       </div>
     );
