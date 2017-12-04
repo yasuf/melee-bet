@@ -12,7 +12,6 @@ class RoundGenerator extends Component {
   }
 
   renderMatch = ({ playerTop, playerBottom }) => {
-    debugger
     return [
       <li className="spacer">
         &nbsp;

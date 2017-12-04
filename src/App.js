@@ -67,11 +67,12 @@ class App extends Component {
           facebookLogout={ this.facebookLogout } 
           loggedIn={ this.state.loggedIn } 
         />
-        <p className="App-intro">
-          Welcome to downair.gg
-        </p>
-        { this.state.loggedIn && <DashboardContainer /> }
-        { !this.state.loggedIn && <LogIn openFacebookOAuth={ this.openFacebookOAuth } /> }
+        { this.state.loggedIn && 
+          <DashboardContainer /> 
+        }
+        { !this.state.loggedIn && 
+          <LogIn openFacebookOAuth={ this.openFacebookOAuth } /> 
+        }
       </div>
     );
   }
