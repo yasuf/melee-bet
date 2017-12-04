@@ -5,6 +5,7 @@ import './App.css';
 import * as FontAwesome from 'react-icons/lib/fa'
 import LogIn from './features/login/LogIn'
 import Header from './features/common/Header'
+import DashboardContainer from './features/dashboard/container/DashboardContainer'
 
 const firebase = require('firebase')
 
@@ -69,6 +70,7 @@ class App extends Component {
         <p className="App-intro">
           Welcome to downair.gg
         </p>
+        { this.state.loggedIn && <DashboardContainer /> }
         { !this.state.loggedIn && <LogIn openFacebookOAuth={ this.openFacebookOAuth } /> }
       </div>
     );
