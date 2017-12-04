@@ -6,11 +6,13 @@ import * as FontAwesome from 'react-icons/lib/fa'
 import LogIn from './features/login/LogIn'
 import Header from './features/common/Header'
 import DashboardContainer from './features/dashboard/container/DashboardContainer'
+import Sidebar from './features/sidebar/components/Sidebar'
 
 const firebase = require('firebase')
 
 const defaultState = {
-  loggedIn: false
+  loggedIn: false,
+  isSidebarOpen: false
 }
 
 class App extends Component {
@@ -26,7 +28,7 @@ class App extends Component {
 
   checkLogInStatus = () => {
     const user = firebase.auth().onAuthStateChanged((user) => {
-      if(user) {
+      if (user) {
         this.setState({ loggedIn: true })
       }
     })
@@ -59,20 +61,33 @@ class App extends Component {
       })
   }
 
+  openSideBar = () => {
+
+  }
+
+  onSetSidebarOpen = (open) => {
+    this.setState({ isSidebarOpen: open })
+  }
+
   render() {
     const { loggedIn } = this.state
     return (
       <div className="App">
-        <Header 
+        <Header
           facebookLogout={ this.facebookLogout } 
           loggedIn={ this.state.loggedIn } 
         />
+        <Sidebar 
+          isSidebarOpen={ this.state.isSidebarOpen }
+          loggedIn={ this.state.loggedIn }
+        >
         { this.state.loggedIn && 
           <DashboardContainer /> 
         }
         { !this.state.loggedIn && 
           <LogIn openFacebookOAuth={ this.openFacebookOAuth } /> 
         }
+        </Sidebar>
       </div>
     );
   }

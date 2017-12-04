@@ -1,0 +1,15 @@
+.sidebar {
+  width: 200px;
+}
+
+ul.sidebar-list {
+  list-style: none;
+  -webkit-padding-start: 0;
+}
+.sidebar-list li { 
+  cursor: pointer;
+  line-height: 50px;
+}
+.sidebar-list li a:hover {
+  color: red;
+}

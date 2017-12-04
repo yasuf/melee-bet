@@ -1,37 +1,39 @@
 import React, { Component } from 'react'
 import ReactSidebar from 'react-sidebar'
 
-class Sidebar extends Component {
+import './sidebar.css'
 
-  constructor() {
-    super()
-    this.state = {
-      isOpen: true
-    }
-  }
+class Sidebar extends Component {
 
   renderContent = () => {
     return (
-      <ul>
-        <li>Tournaments</li>
-        <li>My Tickets</li>
+      <ul className="sidebar-list">
+        <li>
+          <a href="#">Tournaments</a>
+        </li>
+        <li>
+          <a href="#">My Tickets</a>
+        </li>
+        <li>
+          <a href="#">Rankings</a>
+        </li>
       </ul>
     )
   }
 
-  onSetSidebarOpen = (open) => {
-    this.setState({ isOpen: open })
-  }
-
-
   render() {
-    const { isOpen } = this.state
+    const { isSidebarOpen, styles, loggedIn } = this.props
+    const sidebarStyles = { root: { top: '60px' } }
     return (
       <ReactSidebar 
         sidebar={ this.renderContent() }
-        open={ this.state.isOpen }
+        open={ isSidebarOpen }
         onSetOpen={ this.onSetSidebarOpen }
+        docked={ loggedIn }
+        styles={ sidebarStyles }
+        sidebarClassName="sidebar"
       >
+        { this.props.children }
       </ReactSidebar>
     )
   }

@@ -5,7 +5,6 @@ import '../components/bracket.css'
 import BracketComponent from '../components/BracketComponent'
 import Match from '../components/Match'
 import RoundGenerator from '../../common/RoundGenerator'
-import Sidebar from '../../sidebar/components/Sidebar.js'
 
 const defaultState = {}
 
@@ -28,8 +27,7 @@ class DashboardContainer extends Component {
   render() {
     return (
       <div className="dashboard-container">
-        <Sidebar />
-        <h2>Predict who you think will in each match!</h2>
+        <h2>Predict who you think will win each match!</h2>
         <div className="winners-bracket">
           <main id="tournament">
             <RoundGenerator 

@@ -4,6 +4,7 @@
 }
 .logo {
   display: inline-block;
+  cursor: pointer;
 }
 .logout {
   cursor: pointer;
