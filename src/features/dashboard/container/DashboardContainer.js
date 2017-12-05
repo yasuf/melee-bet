@@ -17,6 +17,10 @@ const fakeRoundData3 = [
   { playerTop: { tag: 'Mango', isWinner: true }, playerBottom: { tag: "Armada", isWinner: false } },
 ]
 
+const fakeRoundData4 = [
+  { playerTop: { tag: 'Mango', isWinner: true } },
+]
+
 class DashboardContainer extends Component {
 
   constructor() {
@@ -36,6 +40,9 @@ class DashboardContainer extends Component {
             <RoundGenerator 
               matches={ fakeRoundData3 }
             />
+            <RoundGenerator
+              matches={ fakeRoundData4 }
+            />
           </main>
         </div>
         <div className="losers-bracket">
@@ -45,6 +52,9 @@ class DashboardContainer extends Component {
             />
             <RoundGenerator 
               matches={ fakeRoundData3 }
+            />
+            <RoundGenerator
+              matches={ fakeRoundData4 }
             />
           </main>
         </div>

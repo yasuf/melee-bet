@@ -12,6 +12,12 @@ class RoundGenerator extends Component {
   }
 
   renderMatch = ({ playerTop, playerBottom }) => {
+    if (!playerTop || !playerBottom) {
+      const player = playerTop || playerBottom
+      return <li className={ classnames('game' ,'game-top', { winner: player.isWinner }) }>
+        { player.tag }
+      </li>
+    }
     return [
       <li className="spacer">
         &nbsp;
