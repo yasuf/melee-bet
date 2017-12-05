@@ -35,9 +35,6 @@ class RoundGenerator extends Component {
       >
         { playerTop.tag || '-' }
       </li>,
-      <li className="game game-spacer">
-        &nbsp;
-      </li>,
       <li 
         className={ classnames('game' ,'game-bottom', { winner: playerBottom.isWinner }) }
         onClick={ () => { this.props.onPlayerClick(playerBottom, playerTop) }  }
