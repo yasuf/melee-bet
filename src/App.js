@@ -5,8 +5,17 @@ import './App.css';
 import * as FontAwesome from 'react-icons/lib/fa'
 import LogIn from './features/login/LogIn'
 import Header from './features/common/Header'
+import TicketList from './features/tickets/components/TicketList'
 import DashboardContainer from './features/dashboard/container/DashboardContainer'
 import Sidebar from './features/sidebar/components/Sidebar'
+
+import Tournaments from './features/tournaments/container/Tournaments'
+import Rankings from './features/rankings/container/Rankings'
+
+import { BrowserRouter as Router,
+          Route } from 'react-router-dom'
+
+import { signOut, signInWithFacebook, checkFirebaseLogInStatus } from './utils/firebase'
 
 const firebase = require('firebase')
 
@@ -27,7 +36,7 @@ class App extends Component {
   }
 
   checkLogInStatus = () => {
-    const user = firebase.auth().onAuthStateChanged((user) => {
+    checkFirebaseLogInStatus((user) => {
       if (user) {
         this.setState({ loggedIn: true })
       }
@@ -35,9 +44,8 @@ class App extends Component {
   }
 
   facebookLogout = () => {
-    firebase.auth().signOut()
+    signOut()
       .then(() => {
-        console.log('sign out success')
         this.setState({ loggedIn: false })
       })
       .catch(() => {
@@ -47,47 +55,53 @@ class App extends Component {
 
   openFacebookOAuth = (e) => {
     e.preventDefault()
-    const provider = new firebase.auth.FacebookAuthProvider()    
-
-    firebase.auth().signInWithPopup(provider)
+    signInWithFacebook()
       .then((result) => {
         const token = result.credential.accessToken
         const user = result.user
         const email = user.email
       })
       .catch((error) => {
-        debugger
         const errorCode = error.code
       })
-  }
-
-  openSideBar = () => {
-
   }
 
   onSetSidebarOpen = (open) => {
     this.setState({ isSidebarOpen: open })
   }
 
+  renderLoggedInRoutes = () => {
+    return (
+      <div>
+        <Route path="/tournaments" component={ Tournaments } />
+        <Route exact path="/tickets" component={ TicketList } />
+        <Route path="/tickets/:id" component={ DashboardContainer } />
+        <Route path="/rankings" component={ Rankings } />
+      </div>
+    )
+  }
+
   render() {
     const { loggedIn } = this.state
     return (
       <div className="App">
-        <Header
-          facebookLogout={ this.facebookLogout } 
-          loggedIn={ this.state.loggedIn } 
-        />
-        <Sidebar 
-          isSidebarOpen={ this.state.isSidebarOpen }
-          loggedIn={ this.state.loggedIn }
-        >
-        { this.state.loggedIn && 
-          <DashboardContainer /> 
-        }
-        { !this.state.loggedIn && 
-          <LogIn openFacebookOAuth={ this.openFacebookOAuth } /> 
-        }
-        </Sidebar>
+        <Router>
+          <div>
+            <Header
+              facebookLogout={ this.facebookLogout } 
+              loggedIn={ this.state.loggedIn } 
+            />
+            <Sidebar 
+              isSidebarOpen={ this.state.isSidebarOpen }
+              loggedIn={ this.state.loggedIn }
+            >
+            { this.state.loggedIn && this.renderLoggedInRoutes() }
+            { !this.state.loggedIn && 
+              <LogIn openFacebookOAuth={ this.openFacebookOAuth } /> 
+            }
+            </Sidebar>
+          </div>
+        </Router>
       </div>
     );
   }

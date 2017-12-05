@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ReactSidebar from 'react-sidebar'
 
+import { Link } from 'react-router-dom'
+
 import './sidebar.css'
 
 class Sidebar extends Component {
@@ -8,15 +10,21 @@ class Sidebar extends Component {
   renderContent = () => {
     return (
       <ul className="sidebar-list">
-        <li>
-          <a href="#">Tournaments</a>
-        </li>
-        <li>
-          <a href="#">My Tickets</a>
-        </li>
-        <li>
-          <a href="#">Rankings</a>
-        </li>
+        <Link to="/tournaments">
+          <li>
+              Tournaments
+          </li>
+        </Link>
+        <Link to="/tickets">
+          <li>
+              My Tickets
+          </li>
+        </Link>
+        <Link to="/rankings">
+          <li>
+              Rankings
+          </li>
+        </Link>
       </ul>
     )
   }

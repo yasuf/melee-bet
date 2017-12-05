@@ -6,6 +6,6 @@ import './index.css';
 import './firebaseSetup'
 
 ReactDOM.render(
-  <App />,
+    <App />,
   document.getElementById('root')
 );
