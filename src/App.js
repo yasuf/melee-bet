@@ -6,7 +6,7 @@ import * as FontAwesome from 'react-icons/lib/fa'
 import LogIn from './features/login/LogIn'
 import Header from './features/common/Header'
 import TicketList from './features/tickets/components/TicketList'
-import DashboardContainer from './features/dashboard/container/DashboardContainer'
+import TournamentBracketContainer from './features/tournamentBracket/container/TournamentBracketContainer'
 import Sidebar from './features/sidebar/components/Sidebar'
 
 import Tournaments from './features/tournaments/container/Tournaments'
@@ -75,7 +75,7 @@ class App extends Component {
       <div>
         <Route path="/tournaments" component={ Tournaments } />
         <Route exact path="/tickets" component={ TicketList } />
-        <Route path="/tickets/:id" component={ DashboardContainer } />
+        <Route path="/tickets/:id" component={ TournamentBracketContainer } />
         <Route path="/rankings" component={ Rankings } />
       </div>
     )
