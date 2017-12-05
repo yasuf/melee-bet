@@ -85,9 +85,6 @@ class TournamentBracketContainer extends Component {
   onPlayerClick = (player, opponent) => {
     const { tag } = player
     const { predictions } = this.state
-    if(!opponent.loserGoesTo) {
-      this.removeTagFromPrediction(opponent.tag)
-    }
     this.setState({
       predictions: {
         ...predictions,
@@ -183,17 +180,6 @@ class TournamentBracketContainer extends Component {
       playerTop: { ...predictions.losersSemis, match: 'losersFinals' },
       playerBottom: { ...predictions.losersFinalsBottom, match: 'losersFinals' }
     }]
-  }
-
-  removeTagFromPrediction = (tag) => {
-    const { predictions } = this.state
-    const predictionsCopy = { ...predictions }
-    for(var key in predictionsCopy) {
-      if(predictionsCopy[key].tag === tag) {
-        delete predictionsCopy[key]
-      }
-    }
-    this.setState({ predictionsCopy })
   }
 
   // mapLosersFinalsData = () => {
