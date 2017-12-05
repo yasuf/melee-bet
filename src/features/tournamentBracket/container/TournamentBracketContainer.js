@@ -10,19 +10,23 @@ const fakeData = {
   topEightPlayers: {
     winnersSemisTopA: {
       tag: 'Mango',
-      match: 'winnersSemisTop'
+      match: 'winnersSemisTop',
+      loserGoesTo: 'losersQuartersTopA'
     },
     winnersSemisTopB: {
       tag: 'Armada',
-      match: 'winnersSemisTop'
+      match: 'winnersSemisTop',
+      loserGoesTo: 'losersQuartersTopA'
     },
     winnersSemisBottomA: {
       tag: 'Hbox',
-      match: 'winnersSemisBottom'
+      match: 'winnersSemisBottom',
+      loserGoesTo: 'losersQuartersBottomA'
     },
     winnersSemisBottomB: {
       tag: 'Leffen',
-      match: 'winnersSemisBottom'
+      match: 'winnersSemisBottom',
+      loserGoesTo: 'losersQuartersBottomA'
     },
     prelosersQuartersTopA: {
       tag: 'Axe',
@@ -62,6 +66,8 @@ const WinnerData = [
 const defaultState = {
   fakeData,
   predictions: {
+    winnerFinals: {},
+    losersFinals: {},
     winnersSemisTop: {},
     winnersSemisBottom: {},
     prelosersQuartersTop: {},
@@ -76,13 +82,15 @@ class TournamentBracketContainer extends Component {
     this.state = defaultState
   }
 
-  onPlayerClick = (player) => {
+  onPlayerClick = (player, opponent) => {
     const { tag } = player
     const { predictions } = this.state
+    debugger
     this.setState({
       predictions: {
         ...predictions,
-        [player.match]: { tag }
+        [player.match]: { tag },
+        [opponent.loserGoesTo]: { tag: opponent.tag }
       }
     })
   }
@@ -129,25 +137,60 @@ class TournamentBracketContainer extends Component {
     ]
   }
 
+  mapGrandfinalsData = () => {
+    const { predictions } = this.state
+    return [{
+      playerTop: predictions.winnersFinals,
+      playerBottom: predictions.losersFinals
+    }]
+  }
+
   mapWinnersFinalsData = () => {
     const { predictions } = this.state
     return [{
-      playerTop: predictions.winnersSemisTop,
-      playerBottom: predictions.winnersSemisBottom
+      playerTop: { ...predictions.winnersSemisTop, match: 'winnersFinals', loserGoesTo: 'losersFinalsBottom' },
+      playerBottom: { ...predictions.winnersSemisBottom, match: 'winnersFinals', loserGoesTo: 'losersFinalsBottom' }
     }]
   }
 
   mapLosersQuartersData = () => {
     const { predictions } = this.state
-    return [{
-      playerTop: predictions.prelosersQuartersTop,
-      playerBottom: predictions.prelosersQuartersBottom
-    }]
+    return [
+      {
+        playerTop: { ...predictions.losersQuartersTopA, match: 'losersQuartersTop' },
+        playerBottom: { ...predictions.prelosersQuartersTop, match: 'losersQuartersTop' }
+      },
+      {
+        playerTop: { ...predictions.losersQuartersBottomA, match: 'losersQuartersBottom' },
+        playerBottom: { ...predictions.prelosersQuartersBottom, match: 'losersQuartersBottom' }
+      }
+    ]
   }
 
   mapLosersSemisData = () => {
-
+    const { predictions } = this.state
+    return [{
+      playerTop: { ...predictions.losersQuartersTop, match: 'losersSemis' },
+      playerBottom: { ...predictions.losersQuartersBottom, match: 'losersSemis' }
+    }] 
   }
+
+  mapLosersFinalsData = () => {
+    const { predictions } = this.state
+    debugger
+    return [{
+      playerTop: { ...predictions.losersSemis, match: 'losersFinals' },
+      playerBottom: { ...predictions.losersFinalsBottom, match: 'losersFinals' }
+    }]
+  }
+
+  // mapLosersFinalsData = () => {
+  //   const { predictions } = this.state
+  //   return [{
+  //     playerTop: { ...predictions.losersSemisA },
+  //     playerBottom: {}
+  //   }]
+  // }
 
   render() {
     return (
@@ -164,7 +207,7 @@ class TournamentBracketContainer extends Component {
               onPlayerClick={ this.onPlayerClick }
             />
             <RoundGenerator
-              matches={ WinnerData }
+              matches={ this.mapGrandfinalsData() }
               onPlayerClick={ this.onPlayerClick }
             />
           </main>
@@ -176,15 +219,15 @@ class TournamentBracketContainer extends Component {
               onPlayerClick={ this.onPlayerClick }
             />
             <RoundGenerator 
-              matches={ this.mapLosersFirstRoundData() }
-              onPlayerClick={ this.onPlayerClick }
-            />
-            <RoundGenerator 
               matches={ this.mapLosersQuartersData() }
               onPlayerClick={ this.onPlayerClick }
             />
             <RoundGenerator
-              matches={ WinnerData }
+              matches={ this.mapLosersSemisData() }
+              onPlayerClick={ this.onPlayerClick }
+            />
+            <RoundGenerator
+              matches={ this.mapLosersFinalsData() }
               onPlayerClick={ this.onPlayerClick }
             />
           </main>

@@ -31,7 +31,7 @@ class RoundGenerator extends Component {
       </li>,
       <li 
         className={ classnames('game' ,'game-top', { winner: playerTop.isWinner }) }
-        onClick={ () => this.props.onPlayerClick(playerTop) }
+        onClick={ () => this.props.onPlayerClick(playerTop, playerBottom) }
       >
         { playerTop.tag || '-' }
       </li>,
@@ -40,7 +40,7 @@ class RoundGenerator extends Component {
       </li>,
       <li 
         className={ classnames('game' ,'game-bottom', { winner: playerBottom.isWinner }) }
-        onClick={ () => { this.props.onPlayerClick(playerBottom) }  }
+        onClick={ () => { this.props.onPlayerClick(playerBottom, playerTop) }  }
       >
         { playerBottom.tag || '-' }
       </li>,
