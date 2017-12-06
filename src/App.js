@@ -15,7 +15,9 @@ import Rankings from './features/rankings/container/Rankings'
 import { BrowserRouter as Router,
           Route } from 'react-router-dom'
 
-import { signOut, signInWithFacebook, checkFirebaseLogInStatus } from './utils/firebase'
+import { signOut, 
+  signInWithFacebook, 
+  checkFirebaseLogInStatus } from './utils/firebase/auth'
 
 const firebase = require('firebase')
 

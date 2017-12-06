@@ -1,7 +1,8 @@
-var firebase = require('firebase')
+const firebase = require('firebase')
+
 import 'firebase/auth'
 
-var config = {
+const config = {
   apiKey: "AIzaSyAFy20KAdF2Dfk6dq-qG-TgSNCUpyEmtqg",
   authDomain: "meleebet-18ad3.firebaseapp.com",
   databaseURL: "https://meleebet-18ad3.firebaseio.com",
@@ -11,3 +12,5 @@ var config = {
 };
 
 firebase.initializeApp(config);
+
+export default firebase

@@ -6,22 +6,27 @@ import BracketComponent from '../components/BracketComponent'
 import Match from '../components/Match'
 import RoundGenerator from '../../common/RoundGenerator'
 
+import { retrieveTournamentData } from '../../../utils/firebase/db'
+
 const fakeData = {
   topEightPlayers: {
     winnersSemisTopA: {
       tag: 'Mango',
       match: 'winnersSemisTop',
-      loserGoesTo: 'losersQuartersTopA'
+      loserGoesTo: 'losersQuartersTopA',
+      id: 1
     },
     winnersSemisTopB: {
       tag: 'Armada',
       match: 'winnersSemisTop',
-      loserGoesTo: 'losersQuartersTopA'
+      loserGoesTo: 'losersQuartersTopA',
+      id: 2
     },
     winnersSemisBottomA: {
       tag: 'Hbox',
       match: 'winnersSemisBottom',
-      loserGoesTo: 'losersQuartersBottomA'
+      loserGoesTo: 'losersQuartersBottomA',
+      id: 3
     },
     winnersSemisBottomB: {
       tag: 'Leffen',
@@ -46,14 +51,6 @@ const fakeData = {
     }
   }
 }
-
-/*
-
-state = {
-  second_round
-}
-
-*/
 
 const secondRoundData = [
   { playerTop: { tag: '-', isWinner: true }, playerBottom: { tag: "-", isWinner: false } },
@@ -82,6 +79,14 @@ class TournamentBracketContainer extends Component {
     this.state = defaultState
   }
 
+  componentWillMount() {
+    retrieveTournamentData(1)
+      .then(snap => {
+        const tournament = snap.val()
+        this.setState({ tournamentData: tournament })
+      })
+  }
+
   onPlayerClick = (player, opponent) => {
     const { tag } = player
     const { predictions } = this.state
@@ -95,14 +100,13 @@ class TournamentBracketContainer extends Component {
   }
 
   mapWinnersFirstRoundData = () => {
-    const { fakeData } = this.state
-    const { topEightPlayers } = fakeData
+    const { tournamentData } = this.state
     const { 
       winnersSemisTopA,
       winnersSemisTopB,
       winnersSemisBottomA,
       winnersSemisBottomB
-      } = topEightPlayers
+      } = tournamentData
     return [
       {
         playerTop: winnersSemisTopA,
@@ -116,14 +120,13 @@ class TournamentBracketContainer extends Component {
   }
 
   mapLosersFirstRoundData = () => {
-    const { fakeData } = this.state
-    const { topEightPlayers } = fakeData
+    const { tournamentData } = this.state
     const { 
       prelosersQuartersTopA,
       prelosersQuartersTopB,
       prelosersQuartersBottomA,
       prelosersQuartersBottomB,
-      } = topEightPlayers
+      } = tournamentData
     return [
       {
         playerTop: prelosersQuartersTopA,
@@ -182,15 +185,8 @@ class TournamentBracketContainer extends Component {
     }]
   }
 
-  // mapLosersFinalsData = () => {
-  //   const { predictions } = this.state
-  //   return [{
-  //     playerTop: { ...predictions.losersSemisA },
-  //     playerBottom: {}
-  //   }]
-  // }
-
   render() {
+    if(!this.state.tournamentData) return null
     return (
       <div className="dashboard-container">
         <h2>Predict who you think will win each match!</h2>
