@@ -6,51 +6,7 @@ import BracketComponent from '../components/BracketComponent'
 import Match from '../components/Match'
 import RoundGenerator from '../../common/RoundGenerator'
 
-import { retrieveTournamentData } from '../../../utils/firebase/db'
-
-const fakeData = {
-  topEightPlayers: {
-    winnersSemisTopA: {
-      tag: 'Mango',
-      match: 'winnersSemisTop',
-      loserGoesTo: 'losersQuartersTopA',
-      id: 1
-    },
-    winnersSemisTopB: {
-      tag: 'Armada',
-      match: 'winnersSemisTop',
-      loserGoesTo: 'losersQuartersTopA',
-      id: 2
-    },
-    winnersSemisBottomA: {
-      tag: 'Hbox',
-      match: 'winnersSemisBottom',
-      loserGoesTo: 'losersQuartersBottomA',
-      id: 3
-    },
-    winnersSemisBottomB: {
-      tag: 'Leffen',
-      match: 'winnersSemisBottom',
-      loserGoesTo: 'losersQuartersBottomA'
-    },
-    prelosersQuartersTopA: {
-      tag: 'Axe',
-      match: 'prelosersQuartersTop'
-    },
-    prelosersQuartersTopB: {
-      tag: 'S2J',
-      match: 'prelosersQuartersTop'
-    },
-    prelosersQuartersBottomA: {
-      tag: 'Plup',
-      match: 'prelosersQuartersBottom'
-    },
-    prelosersQuartersBottomB: {
-      tag: 'SFAT',
-      match: 'prelosersQuartersBottom'
-    }
-  }
-}
+import { retrieveTournamentData, sendPrediction } from '../../../utils/firebase/db'
 
 const secondRoundData = [
   { playerTop: { tag: '-', isWinner: true }, playerBottom: { tag: "-", isWinner: false } },
@@ -61,9 +17,8 @@ const WinnerData = [
 ]
 
 const defaultState = {
-  fakeData,
   predictions: {
-    winnerFinals: {},
+    winnersFinals: {},
     losersFinals: {},
     winnersSemisTop: {},
     winnersSemisBottom: {},
@@ -87,14 +42,43 @@ class TournamentBracketContainer extends Component {
       })
   }
 
+  onSendPrediction = () => {
+    const {
+      grandFinals,
+      winnersFinals,
+      winnersSemisTop,
+      winnersSemisBottom,
+      prelosersQuartersTop,
+      prelosersQuartersBottom,
+      losersQuartersTop,
+      losersQuartersBottom,
+      losersSemis,
+      losersFinals
+    } = this.state.predictions
+    const prediction = {
+      grandFinals,
+      winnersFinals,
+      winnersSemisTop,
+      winnersSemisBottom,
+      prelosersQuartersTop,
+      prelosersQuartersBottom,
+      losersQuartersTop,
+      losersQuartersBottom,
+      losersSemis,
+      losersFinals
+    }
+    sendPrediction(prediction)
+  }
+
   onPlayerClick = (player, opponent) => {
+    debugger
     const { tag } = player
     const { predictions } = this.state
     this.setState({
       predictions: {
         ...predictions,
-        [player.match]: { tag },
-        [opponent.loserGoesTo]: { tag: opponent.tag }
+        [player.match]: { tag, id: player.id  },
+        [opponent.loserGoesTo]: { tag: opponent.tag, id: opponent.id }
       }
     })
   }
@@ -142,8 +126,8 @@ class TournamentBracketContainer extends Component {
   mapGrandfinalsData = () => {
     const { predictions } = this.state
     return [{
-      playerTop: predictions.winnersFinals,
-      playerBottom: predictions.losersFinals
+      playerTop: { ...predictions.winnersFinals, match: 'grandFinals' },
+      playerBottom: { ...predictions.losersFinals, match: 'grandFinals' }
     }]
   }
 
@@ -185,6 +169,13 @@ class TournamentBracketContainer extends Component {
     }]
   }
 
+  mapFirstPlace = () => {
+    const { predictions } = this.state
+    return [{
+      playerTop: { ...predictions.grandFinals, match: 'grandFinals' },
+    }]
+  }
+
   render() {
     if(!this.state.tournamentData) return null
     return (
@@ -203,6 +194,9 @@ class TournamentBracketContainer extends Component {
             <RoundGenerator
               matches={ this.mapGrandfinalsData() }
               onPlayerClick={ this.onPlayerClick }
+            />
+            <RoundGenerator
+              matches={ this.mapFirstPlace() }
             />
           </main>
         </div>
@@ -225,6 +219,7 @@ class TournamentBracketContainer extends Component {
               onPlayerClick={ this.onPlayerClick }
             />
           </main>
+          <button onClick={ this.onSendPrediction }>Send Prediction</button>
         </div>
       </div>
     );

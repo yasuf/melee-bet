@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './rankings.css'
 
+import { fakeTournamentData } from '../../../utils/firebase/fakeData'
+
 import { writePlayerData, writePlayersData, createTournament } from '../../../utils/firebase/db'
 
 const mango = {
@@ -19,7 +21,7 @@ class Rankings extends Component {
           <a 
             href="#"
             onClick={ () => {
-              createTournament()
+              createTournament(fakeTournamentData)
             } }
           >
             Top 100

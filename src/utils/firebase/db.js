@@ -24,3 +24,10 @@ export function createTournament(tournament) {
 export function retrieveTournamentData(id) {
   return database().ref(`tournaments/${id}`).once('value')
 }
+
+export function sendPrediction(prediction) {
+  const predictionRef = database().ref(`prediction`).push()
+  debugger
+  // predictionRef.set(prediction)
+  // return database().ref(`prediction`)
+}

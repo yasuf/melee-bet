@@ -39,23 +39,28 @@ export const fakeTournamentData = {
     winnersSemisBottomB: {
       tag: 'Leffen',
       match: 'winnersSemisBottom',
-      loserGoesTo: 'losersQuartersBottomA'
+      loserGoesTo: 'losersQuartersBottomA',
+      id: 4
     },
     prelosersQuartersTopA: {
       tag: 'Axe',
-      match: 'prelosersQuartersTop'
+      match: 'prelosersQuartersTop',
+      id: 5
     },
     prelosersQuartersTopB: {
       tag: 'S2J',
-      match: 'prelosersQuartersTop'
+      match: 'prelosersQuartersTop',
+      id: 6
     },
     prelosersQuartersBottomA: {
       tag: 'Plup',
-      match: 'prelosersQuartersBottom'
+      match: 'prelosersQuartersBottom',
+      id: 7
     },
     prelosersQuartersBottomB: {
       tag: 'SFAT',
-      match: 'prelosersQuartersBottom'
+      match: 'prelosersQuartersBottom',
+      id: 8
     }
   }
 }

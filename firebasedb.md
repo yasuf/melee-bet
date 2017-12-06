@@ -19,7 +19,7 @@
   },
   tournamentPlayers: {
     tournament_id: {  
-      winnersSemisTopA: {
+      winnersSemisTopA: { // [TournamentPlayer]
         player_id: 1,
         tag: 'Mang0',
         loserGoesTo: 'losersQuartersTopA',
@@ -37,22 +37,23 @@
 }
   predictions: {
     id: {
+      user_id[Number]
       tournament_id[Number],
-      player_id[Number],
-      user_id[Number],
-      winnerSemisTop[Number], //player id
-      winnerSemisBottom[Number], //player id
-      winnersFinals[Number], //player id
-      winnersPreQuartersTop[Number], //player id
-      winnersPreQuartersBottom[Number], //player id
-      winnersQuartersTop[Number], //player id
-      winnersQuartersBottom[Number], //player id
-      losersSemis[Number], //player id
-      losersFinals[Number], //player id
-      grandFinals[Number], //player id
+      grandFinals[TournamentPlayer],
+      winnersFinals[TournamentPlayer],
+      winnerSemisTop[TournamentPlayer],
+      winnerSemisBottom[TournamentPlayer],
+      losersFinals[TournamentPlayer],
+      losersSemis[TournamentPlayer],
+      losersQuartersTop[TournamentPlayer],
+      losersQuartersBottom[TournamentPlayer],
+      losersPreQuartersTop[TournamentPlayer],
+      losersPreQuartersBottom[TournamentPlayer],
     }
   },
+  tournamentPredictionsPerUser: {
 
+  }
 }
 
 
@@ -78,3 +79,16 @@ predictions: {
 }
 
 ```
+## Prediction defintion
+
+Prediction
+  has one tournament
+  belongs to a user
+  has one winnerSemisTop as Player
+  has one winnerSemisTop as Player
+  has one winnerSemisTop as Player
+  has one winnerSemisTop as Player
+  has one winnerSemisTop as Player
+  has one winnerSemisTop as Player
+  has one winnerSemisTop as Player
+  
