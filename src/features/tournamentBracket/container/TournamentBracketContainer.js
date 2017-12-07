@@ -38,9 +38,41 @@ class TournamentBracketContainer extends Component {
     const { id } = this.props.match.params
     retrieveTournamentData(id)
       .then(snap => {
-        const tournament = snap.val()
+        let tournament = snap.val()
+        tournament = this.populateMatchData(tournament)
         this.setState({ tournamentData: tournament })
       })
+  }
+
+  populateMatchData = (tournamentData) => {
+    let { 
+      winnersSemisTopA,
+      winnersSemisTopB,
+      winnersSemisBottomA,
+      winnersSemisBottomB,
+      prelosersQuartersTopA,
+      prelosersQuartersTopB,
+      prelosersQuartersBottomA,
+      prelosersQuartersBottomB
+    } = tournamentData.topEight
+    winnersSemisTopA = { ...winnersSemisTopA, match: 'winnersSemisTop', loserGoesTo: 'losersQuartersTopA' }
+    winnersSemisTopB = { ...winnersSemisTopB, match: 'winnersSemisTop', loserGoesTo: 'losersQuartersTopA' }
+    winnersSemisBottomA = { ...winnersSemisBottomA, match: 'winnersSemisBottom', loserGoesTo: 'losersQuartersBottomA' }
+    winnersSemisBottomB = { ...winnersSemisBottomB, match: 'winnersSemisBottom', loserGoesTo: 'losersQuartersBottomA' }
+    prelosersQuartersTopA = { ...prelosersQuartersTopA, match: 'prelosersQuartersTop' }
+    prelosersQuartersTopB = { ...prelosersQuartersTopB, match: 'prelosersQuartersTop' }
+    prelosersQuartersBottomA = { ...prelosersQuartersBottomA, match: 'prelosersQuartersBottom' }
+    prelosersQuartersBottomB = { ...prelosersQuartersBottomB, match: 'prelosersQuartersBottom' }
+    return {
+      winnersSemisTopA,
+      winnersSemisTopB,
+      winnersSemisBottomA,
+      winnersSemisBottomB,
+      prelosersQuartersTopA,
+      prelosersQuartersTopB,
+      prelosersQuartersBottomA,
+      prelosersQuartersBottomB,
+    }
   }
 
   onSendPrediction = () => {
@@ -85,15 +117,24 @@ class TournamentBracketContainer extends Component {
     })
   }
 
+  onRemovePrediction = (match) => {
+    const { predictions } = this.state
+    this.setState({
+      predictions: {
+        ...predictions,
+        [match]: null
+      }
+    })
+  }
+
   mapWinnersFirstRoundData = () => {
     const { tournamentData } = this.state
-    const { topEight } = tournamentData
     const { 
       winnersSemisTopA,
       winnersSemisTopB,
       winnersSemisBottomA,
       winnersSemisBottomB
-      } = topEight
+      } = tournamentData
     return [
       {
         playerTop: winnersSemisTopA,
@@ -108,13 +149,13 @@ class TournamentBracketContainer extends Component {
 
   mapLosersFirstRoundData = () => {
     const { tournamentData } = this.state
-    const { topEight } = tournamentData
+    debugger
     const { 
       prelosersQuartersTopA,
       prelosersQuartersTopB,
       prelosersQuartersBottomA,
       prelosersQuartersBottomB,
-      } = topEight
+      } = tournamentData
     return [
       {
         playerTop: prelosersQuartersTopA,
@@ -190,17 +231,21 @@ class TournamentBracketContainer extends Component {
             <RoundGenerator 
               matches={ this.mapWinnersFirstRoundData() }
               onPlayerClick={ this.onPlayerClick }
+              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator 
               matches={ this.mapWinnersFinalsData() }
               onPlayerClick={ this.onPlayerClick }
+              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapGrandfinalsData() }
               onPlayerClick={ this.onPlayerClick }
+              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapFirstPlace() }
+              onRemovePrediction={ this.onRemovePrediction }
             />
           </main>
         </div>
@@ -209,18 +254,22 @@ class TournamentBracketContainer extends Component {
             <RoundGenerator 
               matches={ this.mapLosersFirstRoundData() }
               onPlayerClick={ this.onPlayerClick }
+              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator 
               matches={ this.mapLosersQuartersData() }
               onPlayerClick={ this.onPlayerClick }
+              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapLosersSemisData() }
               onPlayerClick={ this.onPlayerClick }
+              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapLosersFinalsData() }
               onPlayerClick={ this.onPlayerClick }
+              onRemovePrediction={ this.onRemovePrediction }
             />
           </main>
           <button onClick={ this.onSendPrediction }>Send Prediction</button>
