@@ -1,0 +1,7 @@
+.selected {
+  background-color: #5b52e4;
+  color: white;
+}
+.match span{
+  font-size: 10px;
+}

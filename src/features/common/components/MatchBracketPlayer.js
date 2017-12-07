@@ -1,6 +1,9 @@
 import React from 'react'
+import classnames from 'classnames'
 
 const defaultState = {}
+
+import './match-bracket-player.css'
 
 class MatchBracketPlayer extends React.Component {
 
@@ -21,7 +24,7 @@ class MatchBracketPlayer extends React.Component {
     const { className, onClick, tag, showCheckmark } = this.props
     return  (
       <li 
-        className={ className }
+        className={ classnames('match', className, { selected: showCheckmark }) }
         onClick={ this.toggleCheckMark }
       >
         { tag || '-' } { showCheckmark && <span>&#9989;</span> }

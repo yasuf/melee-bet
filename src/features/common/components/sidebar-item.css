@@ -1,0 +1,10 @@
+.sidebar-item {
+  padding: 10px;
+  font-size: 20px;
+  color: black;
+  width: 180px;
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid gray;
+}

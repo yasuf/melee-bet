@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 
 import './sidebar.css'
 
+import SidebarItem from 'features/common/components/SidebarItem'
+
 class Sidebar extends Component {
 
   renderContent = () => {
@@ -17,9 +19,9 @@ class Sidebar extends Component {
           </li>
         </Link>*/}
         <Link to="/tickets">
-          <li>
-              Tickets
-          </li>
+          <SidebarItem>
+            My Tickets
+          </SidebarItem>
         </Link>
         {
         /* 

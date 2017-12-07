@@ -38,6 +38,7 @@ body {
 }
 
 li.game {
+  text-align: left;
   padding-left: 20px;
   border: 1px solid #008bba;
   border-radius: 3px;
