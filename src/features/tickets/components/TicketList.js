@@ -3,8 +3,8 @@ import './ticket-list.css'
 
 import { Link } from 'react-router-dom'
 
-import { getAllTournaments } from '../../../utils/firebase/db'
-import { toArray } from '../../../utils/toArray'
+import { getAllTournaments } from 'utils/firebase/db'
+import { toArray } from 'utils/toArray'
 
 class TicketList extends Component {
 
@@ -28,10 +28,10 @@ class TicketList extends Component {
     const { tournaments } = this.state
     if(!tournaments) return null
     return (
-      <div>
+      <div className="ticket-container">
         {
           tournaments.map((tournament) => {
-            return <Link to={ `/tickets/${tournament.id}` }>Desert Melee 5</Link>
+            return <Link className="ticket" to={ `/tickets/${tournament.id}` }>{ tournament.name }</Link>
           })
         }
       </div>

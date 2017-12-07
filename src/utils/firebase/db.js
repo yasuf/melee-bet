@@ -1,14 +1,12 @@
 const firebase = require('firebase')
 
-import { fakeTournamentData } from './fakeData'
-
 import { getUserId } from './auth'
 
 const { database } = firebase
 
-export function writePlayerData(player) {
-  const { id, data } = player
-  database().ref(`players/${id}`).set(data)
+export function writePlayerData(playerData) {
+  const playerRef = database().ref('players').push()
+  playerRef.set(playerData)
 }
 
 export function writePlayersData(array) {

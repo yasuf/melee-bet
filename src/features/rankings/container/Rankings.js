@@ -3,21 +3,8 @@ import './rankings.css'
 
 import { fakeTournamentData } from '../../../utils/firebase/fakeData'
 
-import { writePlayerData, writePlayersData, createTournament } from '../../../utils/firebase/db'
-
-const mango = {
-  id: 1,
-  data: {
-    tag: 'Mang0'
-  }
-}
-
-const tournamentData = {
-  name: 'Desert Melee 5',
-  topEight: {
-
-  }
-}
+import { writePlayerData, writePlayersData } from '../../../utils/firebase/db'
+import { createTournament } from 'utils/tempScript'
 
 class Rankings extends Component {
 
@@ -27,9 +14,7 @@ class Rankings extends Component {
         <li>
           <a 
             href="#"
-            onClick={ () => {
-              createTournament(fakeTournamentData.data)
-            } }
+            onClick={ () => { createTournament() } }
           >
             Top 100
           </a>
