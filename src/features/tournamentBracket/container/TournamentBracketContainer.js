@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './dashboardContainer.css';
+import './tournament-bracket-container.css';
 import '../components/bracket.css'
 
 import BracketComponent from '../components/BracketComponent'
@@ -7,6 +7,8 @@ import Match from '../components/Match'
 import RoundGenerator from '../../common/RoundGenerator'
 
 import { retrieveTournamentData, sendPrediction } from '../../../utils/firebase/db'
+
+import DefaultButton from 'features/common/components/DefaultButton'
 
 const secondRoundData = [
   { playerTop: { tag: '-', isWinner: true }, playerBottom: { tag: "-", isWinner: false } },
@@ -42,6 +44,12 @@ class TournamentBracketContainer extends Component {
         tournament = this.populateMatchData(tournament)
         this.setState({ tournamentData: tournament })
       })
+  }
+
+  resetAllPredictions = () => {
+    this.setState({
+      predictions: {}
+    })
   }
 
   populateMatchData = (tournamentData) => {
@@ -116,7 +124,7 @@ class TournamentBracketContainer extends Component {
       }
     })
   }
-  
+
   mapWinnersFirstRoundData = () => {
     const { tournamentData } = this.state
     const { 
@@ -139,7 +147,6 @@ class TournamentBracketContainer extends Component {
 
   mapLosersFirstRoundData = () => {
     const { tournamentData } = this.state
-    debugger
     const { 
       prelosersQuartersTopA,
       prelosersQuartersTopB,
@@ -221,17 +228,21 @@ class TournamentBracketContainer extends Component {
             <RoundGenerator 
               matches={ this.mapWinnersFirstRoundData() }
               onPlayerClick={ this.onPlayerClick }
+              roundName="Winners Semis"
             />
             <RoundGenerator 
               matches={ this.mapWinnersFinalsData() }
               onPlayerClick={ this.onPlayerClick }
+              roundName="Winners Finals"
             />
             <RoundGenerator
               matches={ this.mapGrandfinalsData() }
               onPlayerClick={ this.onPlayerClick }
+              roundName="Grand Finals"
             />
             <RoundGenerator
               matches={ this.mapFirstPlace() }
+              roundName="Champion"
             />
           </main>
         </div>
@@ -240,21 +251,36 @@ class TournamentBracketContainer extends Component {
             <RoundGenerator 
               matches={ this.mapLosersFirstRoundData() }
               onPlayerClick={ this.onPlayerClick }
+              roundName="Losers Eights"
             />
             <RoundGenerator 
               matches={ this.mapLosersQuartersData() }
               onPlayerClick={ this.onPlayerClick }
+              roundName="Losers Quarters"
             />
             <RoundGenerator
               matches={ this.mapLosersSemisData() }
               onPlayerClick={ this.onPlayerClick }
+              roundName="Losers Semis"
             />
             <RoundGenerator
               matches={ this.mapLosersFinalsData() }
               onPlayerClick={ this.onPlayerClick }
+              roundName="Losers Finals"
             />
           </main>
-          <button onClick={ this.onSendPrediction }>Send Prediction</button>
+        </div>
+        <div className="controls">
+          <DefaultButton
+            onClick={ this.resetAllPredictions }
+          >
+            Reset All
+          </DefaultButton>
+          <DefaultButton
+            onClick={ this.onSendPrediction }
+          >
+            Submit Ticket
+          </DefaultButton>
         </div>
       </div>
     );

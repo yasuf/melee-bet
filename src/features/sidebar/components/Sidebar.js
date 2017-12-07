@@ -21,11 +21,15 @@ class Sidebar extends Component {
               Tickets
           </li>
         </Link>
+        {
+        /* 
         <Link to="/rankings">
           <li>
               Rankings
           </li>
         </Link>
+        */
+        }
       </ul>
     )
   }

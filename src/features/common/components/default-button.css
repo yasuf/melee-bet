@@ -1,0 +1,10 @@
+.default {
+  padding: 10px;
+  box-shadow: 3px 3px 3px 3px #ccc;
+  font-size: 20px;
+  background-color: #008CBA;
+  color: white;
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+}

@@ -1,0 +1,19 @@
+.dashboard-container {
+  margin-left: 50px;
+}
+.controls {
+  margin-right: 50px;
+  text-align: right;
+}
+
+.controls li {
+  display: inline-block;
+  margin-right: 40px;
+  background-color: #008CBA;
+  color: white;
+  box-shadow: 3px 3px 3px 3px #ccc;
+  text-decoration: none;
+}
+.dashboard-container button {
+  margin-right: 30px;
+}
