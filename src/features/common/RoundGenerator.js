@@ -11,11 +11,12 @@ class RoundGenerator extends Component {
   static propTypes = {
     // structure: [{ playerTop: {tag: 'Mango', isWinner: true }, { playerBottom:"Armada" }]
     matches: array,
-    onPlayerClick: func
+    onPlayerClick: func,
+    onRemovePrediction: func
   }
 
   renderMatch = ({ playerTop, playerBottom }) => {
-    const { onPlayerClick } = this.props
+    const { onPlayerClick, onRemovePrediction } = this.props
     if (!playerTop || !playerBottom) {
       const player = playerTop || playerBottom
       return (
@@ -35,6 +36,7 @@ class RoundGenerator extends Component {
       >
         { playerTop.tag || '-' }
       </li>,
+      <span onClick={ () => onRemovePrediction(playerTop.match) }>x</span>,
       <li 
         className={ classnames('game' ,'game-bottom', { winner: playerBottom.isWinner }) }
         onClick={ () => { this.props.onPlayerClick(playerBottom, playerTop) }  }

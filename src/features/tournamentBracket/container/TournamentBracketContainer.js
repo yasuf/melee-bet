@@ -116,17 +116,7 @@ class TournamentBracketContainer extends Component {
       }
     })
   }
-
-  onRemovePrediction = (match) => {
-    const { predictions } = this.state
-    this.setState({
-      predictions: {
-        ...predictions,
-        [match]: null
-      }
-    })
-  }
-
+  
   mapWinnersFirstRoundData = () => {
     const { tournamentData } = this.state
     const { 
@@ -231,21 +221,17 @@ class TournamentBracketContainer extends Component {
             <RoundGenerator 
               matches={ this.mapWinnersFirstRoundData() }
               onPlayerClick={ this.onPlayerClick }
-              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator 
               matches={ this.mapWinnersFinalsData() }
               onPlayerClick={ this.onPlayerClick }
-              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapGrandfinalsData() }
               onPlayerClick={ this.onPlayerClick }
-              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapFirstPlace() }
-              onRemovePrediction={ this.onRemovePrediction }
             />
           </main>
         </div>
@@ -254,22 +240,18 @@ class TournamentBracketContainer extends Component {
             <RoundGenerator 
               matches={ this.mapLosersFirstRoundData() }
               onPlayerClick={ this.onPlayerClick }
-              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator 
               matches={ this.mapLosersQuartersData() }
               onPlayerClick={ this.onPlayerClick }
-              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapLosersSemisData() }
               onPlayerClick={ this.onPlayerClick }
-              onRemovePrediction={ this.onRemovePrediction }
             />
             <RoundGenerator
               matches={ this.mapLosersFinalsData() }
               onPlayerClick={ this.onPlayerClick }
-              onRemovePrediction={ this.onRemovePrediction }
             />
           </main>
           <button onClick={ this.onSendPrediction }>Send Prediction</button>
