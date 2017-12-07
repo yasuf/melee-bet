@@ -35,7 +35,8 @@ class TournamentBracketContainer extends Component {
   }
 
   componentWillMount() {
-    retrieveTournamentData(1)
+    const { id } = this.props.match.params
+    retrieveTournamentData(id)
       .then(snap => {
         const tournament = snap.val()
         this.setState({ tournamentData: tournament })
@@ -43,6 +44,8 @@ class TournamentBracketContainer extends Component {
   }
 
   onSendPrediction = () => {
+    const tournamentId = this.props.match.params.id
+    const { tournamentData, predictions } = this.state
     const {
       grandFinals,
       winnersFinals,
@@ -54,7 +57,7 @@ class TournamentBracketContainer extends Component {
       losersQuartersBottom,
       losersSemis,
       losersFinals
-    } = this.state.predictions
+    } = predictions
     const prediction = {
       grandFinals,
       winnersFinals,
@@ -67,11 +70,10 @@ class TournamentBracketContainer extends Component {
       losersSemis,
       losersFinals
     }
-    sendPrediction(prediction)
+    sendPrediction(prediction, tournamentId)
   }
 
   onPlayerClick = (player, opponent) => {
-    debugger
     const { tag } = player
     const { predictions } = this.state
     this.setState({
@@ -85,12 +87,13 @@ class TournamentBracketContainer extends Component {
 
   mapWinnersFirstRoundData = () => {
     const { tournamentData } = this.state
+    const { topEight } = tournamentData
     const { 
       winnersSemisTopA,
       winnersSemisTopB,
       winnersSemisBottomA,
       winnersSemisBottomB
-      } = tournamentData
+      } = topEight
     return [
       {
         playerTop: winnersSemisTopA,
@@ -105,12 +108,13 @@ class TournamentBracketContainer extends Component {
 
   mapLosersFirstRoundData = () => {
     const { tournamentData } = this.state
+    const { topEight } = tournamentData
     const { 
       prelosersQuartersTopA,
       prelosersQuartersTopB,
       prelosersQuartersBottomA,
       prelosersQuartersBottomB,
-      } = tournamentData
+      } = topEight
     return [
       {
         playerTop: prelosersQuartersTopA,

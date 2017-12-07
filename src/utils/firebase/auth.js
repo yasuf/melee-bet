@@ -12,3 +12,7 @@ export const signInWithFacebook = () => {
 export const checkFirebaseLogInStatus = (callback) => {
   firebase.auth().onAuthStateChanged(callback)
 }
+
+export function getUserId(){ 
+  return firebase.auth().currentUser.uid
+}

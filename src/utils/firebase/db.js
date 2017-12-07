@@ -2,6 +2,8 @@ const firebase = require('firebase')
 
 import { fakeTournamentData } from './fakeData'
 
+import { getUserId } from './auth'
+
 const { database } = firebase
 
 export function writePlayerData(player) {
@@ -17,17 +19,24 @@ export function writePlayersData(array) {
 }
 
 export function createTournament(tournament) {
-  const { id, data } = fakeTournamentData
-  database().ref(`tournaments/${id}`).set(data)
+  const tournamentRef  = database().ref('tournaments').push()
+  tournamentRef.set(tournament)
 }
 
 export function retrieveTournamentData(id) {
   return database().ref(`tournaments/${id}`).once('value')
 }
 
-export function sendPrediction(prediction) {
-  const predictionRef = database().ref(`prediction`).push()
-  debugger
-  // predictionRef.set(prediction)
-  // return database().ref(`prediction`)
+export function getAllTournaments() {
+  return database().ref(`tournaments`).once('value')
 }
+
+export function retrieveUserPrediction(id) {
+  return database().ref(`userPrediction/${ getUserId() }`)
+}
+
+export function sendPrediction(prediction, tournamentId) {
+  const userPredictionRef = database().ref(`userPrediction/${ getUserId() }/${ tournamentId }`)
+  userPredictionRef.set(prediction)
+}
+

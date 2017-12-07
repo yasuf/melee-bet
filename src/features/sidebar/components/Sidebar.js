@@ -10,14 +10,15 @@ class Sidebar extends Component {
   renderContent = () => {
     return (
       <ul className="sidebar-list">
-        <Link to="/tournaments">
+        {/*
+          <Link to="/tournaments">
           <li>
               Tournaments
           </li>
-        </Link>
+        </Link>*/}
         <Link to="/tickets">
           <li>
-              My Tickets
+              Tickets
           </li>
         </Link>
         <Link to="/rankings">

@@ -12,6 +12,13 @@ const mango = {
   }
 }
 
+const tournamentData = {
+  name: 'Desert Melee 5',
+  topEight: {
+
+  }
+}
+
 class Rankings extends Component {
 
   render() {
@@ -21,7 +28,7 @@ class Rankings extends Component {
           <a 
             href="#"
             onClick={ () => {
-              createTournament(fakeTournamentData)
+              createTournament(fakeTournamentData.data)
             } }
           >
             Top 100

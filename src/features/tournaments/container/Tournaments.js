@@ -3,8 +3,6 @@ import './tournaments.css'
 
 class Tournaments extends Component {
 
-  
-
   render() {
     return (
       <div>

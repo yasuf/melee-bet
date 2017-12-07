@@ -15,6 +15,16 @@
   tournaments: {
     id: {
       tournamentName[String],
+      topEight: {
+        winnersSemisTopA,
+        winnersSemisTopB,
+        winnersSemisBottomA,
+        winnersSemisBottomB,
+        prelosersQuartersTopA,
+        prelosersQuartersTopB,
+        prelosersQuartersBottomA,
+        prelosersQuartersBottomB
+      }
     }
   },
   tournamentPlayers: {
@@ -35,20 +45,21 @@
     }
   }
 }
-  predictions: {
-    id: {
-      user_id[Number]
-      tournament_id[Number],
-      grandFinals[TournamentPlayer],
-      winnersFinals[TournamentPlayer],
-      winnerSemisTop[TournamentPlayer],
-      winnerSemisBottom[TournamentPlayer],
-      losersFinals[TournamentPlayer],
-      losersSemis[TournamentPlayer],
-      losersQuartersTop[TournamentPlayer],
-      losersQuartersBottom[TournamentPlayer],
-      losersPreQuartersTop[TournamentPlayer],
-      losersPreQuartersBottom[TournamentPlayer],
+  userPredictions: {
+    user_id: {
+      tournament_id: {
+        tournament_id[Number],
+        grandFinals[TournamentPlayer],
+        winnersFinals[TournamentPlayer],
+        winnerSemisTop[TournamentPlayer],
+        winnerSemisBottom[TournamentPlayer],
+        losersFinals[TournamentPlayer],
+        losersSemis[TournamentPlayer],
+        losersQuartersTop[TournamentPlayer],
+        losersQuartersBottom[TournamentPlayer],
+        losersPreQuartersTop[TournamentPlayer],
+        losersPreQuartersBottom[TournamentPlayer],
+      }
     }
   },
   tournamentPredictionsPerUser: {
