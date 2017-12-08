@@ -25,12 +25,21 @@ export function retrieveTournamentData(id) {
   return database().ref(`tournaments/${id}`).once('value')
 }
 
+export function retrieveTournamentResults(id) {
+  return database().ref(`tournamentResults/${id}`).once('value')
+}
+
+export function createTournamentResults(id, results) {
+  const ref = database().ref(`tournamentResults/${id}`).push()
+  ref.set(results)
+}
+
 export function getAllTournaments() {
   return database().ref(`tournaments`).once('value')
 }
 
-export function retrieveUserPrediction(id) {
-  return database().ref(`userPrediction/${ getUserId() }`)
+export function retrieveUserPrediction(tournamentId) {
+  return database().ref(`userPrediction/${ getUserId() }/${tournamentId}`).once('value')
 }
 
 export function sendPrediction(prediction, tournamentId) {

@@ -25,7 +25,7 @@ class RoundGenerator extends Component {
           &nbsp;
         </li>,
         <li 
-          className={ classnames('game' ,'game-top', { winner: player.isWinner }) }
+          className={ classnames('match', 'game' ,'game-top', { winner: player.isWinner }) }
         >
           { player.tag || '-' }
         </li>,
@@ -34,7 +34,6 @@ class RoundGenerator extends Component {
         </li>
       ]
     }
-    debugger
     return [
       <li className="spacer">
         &nbsp;

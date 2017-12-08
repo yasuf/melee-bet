@@ -8,7 +8,11 @@ import BracketComponent from '../components/BracketComponent'
 import Match from '../components/Match'
 import RoundGenerator from '../../common/RoundGenerator'
 
-import { retrieveTournamentData, sendPrediction } from '../../../utils/firebase/db'
+import { retrieveTournamentData,
+  sendPrediction,
+  retrieveUserPrediction,
+  createTournamentResults
+} from '../../../utils/firebase/db'
 
 import DefaultButton from 'features/common/components/DefaultButton'
 
@@ -28,6 +32,7 @@ const defaultState = {
     winnersSemisBottom: {},
     prelosersQuartersTop: {},
     prelosersQuartersBottom: {},
+    key: 1
   }
 }
 
@@ -45,12 +50,32 @@ class TournamentBracketContainer extends Component {
         let tournament = snap.val()
         tournament = this.populateMatchData(tournament)
         this.setState({ tournamentData: tournament })
+        this.fetchPrediction()
       })
+  }
+
+  fetchPrediction = () => {
+    const { id } = this.props.match.params
+    retrieveUserPrediction(id)
+      .then(snap => {
+        const predictions = snap.val()
+        this.setState({ 
+          predictions,
+          predictionSubmitted: true
+        })
+      })
+  }
+
+  fetchTournamentResults = () => {
+    const { id } = this.props.match.params
   }
 
   resetAllPredictions = () => {
     this.setState({
-      predictions: {}
+      predictions: {},
+      // we need to this so that React resets the state of inner 
+      // components back to their initial state
+      key: this.state.key++ 
     })
   }
 
@@ -89,6 +114,11 @@ class TournamentBracketContainer extends Component {
     const tournamentId = this.props.match.params.id
     const { tournamentData, predictions } = this.state
     const {
+      losersQuartersTopA,
+      losersQuartersBottomA,
+      losersFinalsBottom
+    } = predictions
+    const {
       grandFinals,
       winnersFinals,
       winnersSemisTop,
@@ -110,14 +140,18 @@ class TournamentBracketContainer extends Component {
       losersQuartersTop,
       losersQuartersBottom,
       losersSemis,
-      losersFinals
+      losersFinals,
+      losersQuartersTopOpponent: losersQuartersTopA,
+      losersQuartersBottomOpponent: losersQuartersBottomA,
+      losersFinalsOpponent: losersFinalsBottom
     }
     sendPrediction(prediction, tournamentId)
   }
 
   onPlayerClick = (player, opponent) => {
     const { tag } = player
-    const { predictions } = this.state
+    const { predictions, predictionSubmitted } = this.state
+    if(predictionSubmitted) return
     if(!player.tag || !opponent.tag) return
     this.setState({
       predictions: {
@@ -186,13 +220,24 @@ class TournamentBracketContainer extends Component {
 
   mapLosersQuartersData = () => {
     const { predictions } = this.state
+    let prelosersQuartersTop, prelosersQuartersBottom
+    if (predictions.losersQuartersTopOpponent) {
+      prelosersQuartersTop = predictions.losersQuartersTopOpponent
+    } else {
+      prelosersQuartersTop = { ...predictions.losersQuartersTopA, match: 'losersQuartersTop' }
+    }
+    if (predictions.losersQuartersBottomOpponent) {
+      prelosersQuartersBottom = predictions.losersQuartersBottomOpponent
+    } else {
+      prelosersQuartersBottom = { ...predictions.losersQuartersBottomA, match: 'losersQuartersBottom' }
+    }
     return [
       {
-        playerTop: { ...predictions.losersQuartersTopA, match: 'losersQuartersTop' },
+        playerTop: prelosersQuartersTop,
         playerBottom: { ...predictions.prelosersQuartersTop, match: 'losersQuartersTop' }
       },
       {
-        playerTop: { ...predictions.losersQuartersBottomA, match: 'losersQuartersBottom' },
+        playerTop: prelosersQuartersBottom,
         playerBottom: { ...predictions.prelosersQuartersBottom, match: 'losersQuartersBottom' }
       }
     ]
@@ -208,9 +253,15 @@ class TournamentBracketContainer extends Component {
 
   mapLosersFinalsData = () => {
     const { predictions } = this.state
+    let playerBottom
+    if(predictions.losersFinalsOpponent) {
+      playerBottom = predictions.losersFinalsOpponent
+    } else {
+      playerBottom = { ...predictions.losersFinalsBottom, match: 'losersFinals' }
+    }
     return [{
       playerTop: { ...predictions.losersSemis, match: 'losersFinals' },
-      playerBottom: { ...predictions.losersFinalsBottom, match: 'losersFinals' }
+      playerBottom
     }]
   }
 
@@ -222,21 +273,26 @@ class TournamentBracketContainer extends Component {
   }
 
   render() {
+    const { predictionSubmitted } = this.state
     if(!this.state.tournamentData) return null
-    const tournamentStarted = true
+    const tournamentStarted = false
     const iconStyles = {
       verticalAlign: 'top'
     }
     return (
-      <div className="dashboard-container">
-        <h2>Create a fantasy bracket</h2>
+      <div className="dashboard-container" key={ this.state.key }>
+        <h2 onClick={ this.updateKey }>Create a fantasy bracket</h2>
         <p><b>Instructions:</b> Pick a winner for each match and submit once you fill the bracket completely.</p>
-        { <div className="notification">
+        { tournamentStarted && <div className="notification">
             <FontAwesome.FaInfoCircle style={ iconStyles } /> Tournament has started!
           </div> 
         }
+        { predictionSubmitted && <div className="notification">
+            <FontAwesome.FaInfoCircle style={ iconStyles } /> You already submitted your ticket
+          </div> 
+        }
         { tournamentStarted && <div className="points">My Score: { `7/11` }</div> }
-        <div className={ classnames("winners-bracket", 'bracket', { disabled: true }) }>
+        <div className={ classnames("winners-bracket", 'bracket', { disabled: tournamentStarted || predictionSubmitted }) }>
           <main id="tournament">
             <RoundGenerator 
               matches={ this.mapWinnersFirstRoundData() }
@@ -259,7 +315,7 @@ class TournamentBracketContainer extends Component {
             />
           </main>
         </div>
-        <div className={ classnames("losers-bracket", 'bracket', { disabled: true }) }>
+        <div className={ classnames("losers-bracket", 'bracket', { disabled: tournamentStarted || predictionSubmitted }) }>
           <main id="tournament">
             <RoundGenerator 
               matches={ this.mapLosersFirstRoundData() }
@@ -286,13 +342,13 @@ class TournamentBracketContainer extends Component {
         <div className="controls">
           <DefaultButton
             onClick={ this.resetAllPredictions }
-            disabled={ tournamentStarted }
+            disabled={ tournamentStarted || predictionSubmitted }
           >
             Reset All
           </DefaultButton>
           <DefaultButton
             onClick={ this.onSendPrediction }
-            disabled={ tournamentStarted }
+            disabled={ tournamentStarted || predictionSubmitted }
           >
             Submit Ticket
           </DefaultButton>

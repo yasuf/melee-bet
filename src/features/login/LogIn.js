@@ -8,8 +8,7 @@ const LogIn = ({ openFacebookOAuth}) => {
     <div>
       <button className="fb-login" onClick={ openFacebookOAuth }>
         <FontAwesome.FaFacebookSquare className="fb-logo" /> Log in with Facebook
-      </button>
-      
+      </button>      
     </div>
   )
 }

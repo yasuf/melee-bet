@@ -14,12 +14,13 @@ class BracketMatch extends React.Component {
 
   onMatchBracketPlayerClicked = (selectedPlayer) => {
     const { onPlayerClick, playerTop, playerBottom } = this.props
-    if(selectedPlayer === 'top') {
-      onPlayerClick(playerTop, playerBottom)
-    } else {
-      onPlayerClick(playerBottom, playerTop)
-    }
     if(playerTop.tag && playerBottom.tag) { 
+      if(selectedPlayer === 'top') {
+        onPlayerClick(playerTop, playerBottom)
+      }
+      if(selectedPlayer === 'bottom') {
+        onPlayerClick(playerBottom, playerTop)
+      }
       this.setState({ selectedPlayer })
     }
   }
@@ -34,7 +35,6 @@ class BracketMatch extends React.Component {
 
   render() {
     const { playerTop, playerBottom, onPlayerClick } = this.props
-    debugger
     const { renderCheckmark, selectedPlayer } = this.state
     return [
       <MatchBracketPlayer 

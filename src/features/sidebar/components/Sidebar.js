@@ -25,6 +25,11 @@ class Sidebar extends Component {
         </Link>
         {
         /* 
+        <Link to="/admin">
+          <SidebarItem>
+            Admin
+          </SidebarItem>
+        </Link>
         <Link to="/rankings">
           <li>
               Rankings
