@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import classnames from 'classnames'
 import './tournament-bracket-container.css';
 import '../components/bracket.css'
+import * as FontAwesome from 'react-icons/lib/fa'
 
 import BracketComponent from '../components/BracketComponent'
 import Match from '../components/Match'
@@ -116,6 +118,7 @@ class TournamentBracketContainer extends Component {
   onPlayerClick = (player, opponent) => {
     const { tag } = player
     const { predictions } = this.state
+    if(!player.tag || !opponent.tag) return
     this.setState({
       predictions: {
         ...predictions,
@@ -220,10 +223,20 @@ class TournamentBracketContainer extends Component {
 
   render() {
     if(!this.state.tournamentData) return null
+    const tournamentStarted = true
+    const iconStyles = {
+      verticalAlign: 'top'
+    }
     return (
       <div className="dashboard-container">
-        <h2>Predict who you think will win each match!</h2>
-        <div className="winners-bracket">
+        <h2>Create a fantasy bracket</h2>
+        <p><b>Instructions:</b> Pick a winner for each match and submit once you fill the bracket completely.</p>
+        { <div className="notification">
+            <FontAwesome.FaInfoCircle style={ iconStyles } /> Tournament has started!
+          </div> 
+        }
+        { tournamentStarted && <div className="points">My Score: { `7/11` }</div> }
+        <div className={ classnames("winners-bracket", 'bracket', { disabled: true }) }>
           <main id="tournament">
             <RoundGenerator 
               matches={ this.mapWinnersFirstRoundData() }
@@ -246,7 +259,7 @@ class TournamentBracketContainer extends Component {
             />
           </main>
         </div>
-        <div className="losers-bracket">
+        <div className={ classnames("losers-bracket", 'bracket', { disabled: true }) }>
           <main id="tournament">
             <RoundGenerator 
               matches={ this.mapLosersFirstRoundData() }
@@ -273,11 +286,13 @@ class TournamentBracketContainer extends Component {
         <div className="controls">
           <DefaultButton
             onClick={ this.resetAllPredictions }
+            disabled={ tournamentStarted }
           >
             Reset All
           </DefaultButton>
           <DefaultButton
             onClick={ this.onSendPrediction }
+            disabled={ tournamentStarted }
           >
             Submit Ticket
           </DefaultButton>

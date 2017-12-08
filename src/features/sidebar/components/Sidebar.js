@@ -38,7 +38,7 @@ class Sidebar extends Component {
 
   render() {
     const { isSidebarOpen, styles, loggedIn } = this.props
-    const sidebarStyles = { root: { top: '60px' } }
+    const sidebarStyles = { root: { top: '60px' }, content: { backgroundColor: '#f7f7f7' } }
     return (
       <ReactSidebar 
         sidebar={ this.renderContent() }

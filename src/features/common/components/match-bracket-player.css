@@ -1,4 +1,4 @@
-.selected {
+li.game.selected {
   background-color: #5b52e4;
   color: white;
 }

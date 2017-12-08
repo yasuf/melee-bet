@@ -24,7 +24,20 @@
         prelosersQuartersTopB,
         prelosersQuartersBottomA,
         prelosersQuartersBottomB
-      }
+      },
+      lockPredictions: true/false
+      results: {
+        grandFinals[TournamentPlayer],
+        winnersFinals[TournamentPlayer],
+        winnerSemisTop[TournamentPlayer],
+        winnerSemisBottom[TournamentPlayer],
+        losersFinals[TournamentPlayer],
+        losersSemis[TournamentPlayer],
+        losersQuartersTop[TournamentPlayer],
+        losersQuartersBottom[TournamentPlayer],
+        losersPreQuartersTop[TournamentPlayer],
+        losersPreQuartersBottom[TournamentPlayer],
+      },
     }
   },
   tournamentPlayers: {

@@ -8,3 +8,7 @@
   border-radius: 3px;
   cursor: pointer;
 }
+
+.default.disabled {
+  background-color: #c1c1c1;
+}

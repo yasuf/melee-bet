@@ -17,3 +17,25 @@
 .dashboard-container button {
   margin-right: 30px;
 }
+.dashboard-container p {
+  text-align: left;
+}
+.notification {
+  color: white;
+  background-color: #2481c3;
+  padding: 7px;
+  border-radius: 5px;
+  margin-right: 50px;
+}
+.bracket.disabled .match{
+  color: #a0a0a0;
+}
+.info-icon {
+  font-size: 16px;
+}
+
+.points {
+  font-size: 26px;
+  text-align: left;
+  line-height: 40px;
+}

@@ -43,6 +43,7 @@ li.game {
   border: 1px solid #008bba;
   border-radius: 3px;
   margin-bottom: 5px;
+  background-color: white;
 }
 
 li.game.winner {
