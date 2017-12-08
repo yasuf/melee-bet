@@ -11,7 +11,7 @@ import RoundGenerator from '../../common/RoundGenerator'
 import { retrieveTournamentData,
   sendPrediction,
   retrieveUserPrediction,
-  createTournamentResults
+  retrieveTournamentResults
 } from '../../../utils/firebase/db'
 
 import DefaultButton from 'features/common/components/DefaultButton'
@@ -22,6 +22,12 @@ const secondRoundData = [
 
 const WinnerData = [
   { playerTop: { tag: '-', isWinner: true } }
+]
+
+const EXCLUDED_FROM_SCORE = [
+  'losersQuartersTopOpponent', 
+  'losersQuartersBottomOpponent',
+  'losersFinalsOpponent'
 ]
 
 const defaultState = {
@@ -51,6 +57,7 @@ class TournamentBracketContainer extends Component {
         tournament = this.populateMatchData(tournament)
         this.setState({ tournamentData: tournament })
         this.fetchPrediction()
+        this.fetchTournamentResults()
       })
   }
 
@@ -68,6 +75,23 @@ class TournamentBracketContainer extends Component {
 
   fetchTournamentResults = () => {
     const { id } = this.props.match.params
+    retrieveTournamentResults(id).then((snap) => {
+      const results = snap.val()
+      this.setState({ results: results}, this.calculateStore)
+    })
+  }
+
+  calculateStore = () => {
+    const { predictions, results } = this.state
+    let score = 0
+    const resultsObj = Object.values(results)[0]
+    for(let key in resultsObj) {
+      debugger
+      if(resultsObj[key].id === predictions[key].id && EXCLUDED_FROM_SCORE.indexOf(key) === -1) {
+        score++
+      }
+    }
+    this.setState({ score })
   }
 
   resetAllPredictions = () => {
@@ -273,9 +297,9 @@ class TournamentBracketContainer extends Component {
   }
 
   render() {
-    const { predictionSubmitted } = this.state
+    const { predictionSubmitted, score } = this.state
     if(!this.state.tournamentData) return null
-    const tournamentStarted = false
+    const tournamentStarted = true
     const iconStyles = {
       verticalAlign: 'top'
     }
@@ -291,7 +315,7 @@ class TournamentBracketContainer extends Component {
             <FontAwesome.FaInfoCircle style={ iconStyles } /> You already submitted your ticket
           </div> 
         }
-        { tournamentStarted && <div className="points">My Score: { `7/11` }</div> }
+        { tournamentStarted && <div className="points">My Score: { `${score}/10` }</div> }
         <div className={ classnames("winners-bracket", 'bracket', { disabled: tournamentStarted || predictionSubmitted }) }>
           <main id="tournament">
             <RoundGenerator 
