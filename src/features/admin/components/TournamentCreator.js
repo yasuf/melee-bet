@@ -75,7 +75,6 @@ class TournamentCreator extends Component {
 
   createTournament = () => {
     const data = this.getTournamentData()
-    debugger
     createTournament(this.getTournamentData())
   }
 
