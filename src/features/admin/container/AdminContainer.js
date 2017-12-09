@@ -4,6 +4,7 @@ import './admin-container.css'
 import TournamentList from 'features/tickets/components/TournamentList'
 import StartTournamentButton from 'features/admin/components/StartTournamentButton'
 import TournamentCreator from 'features/admin/components/TournamentCreator'
+import TournamentResultsForm from 'features/admin/components/TournamentResultsForm'
 
 class AdminContainer extends Component {
 
@@ -17,6 +18,7 @@ class AdminContainer extends Component {
           <StartTournamentButton />
         </TournamentList>
         <TournamentCreator />
+        <TournamentResultsForm />
       </div>
     )
   }
