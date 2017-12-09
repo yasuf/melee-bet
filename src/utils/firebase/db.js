@@ -16,9 +16,27 @@ export function writePlayersData(array) {
   })
 }
 
+export function retrieveAllPlayers() {
+  return database().ref('players').once('value')
+}
+
 export function createTournament(tournament) {
-  const tournamentRef  = database().ref('tournaments').push()
+  debugger
+  const tournamentRef = database().ref('tournaments').push()
   tournamentRef.set(tournament)
+}
+
+export function startTournament(id) {
+  const tournamentRef = database().ref(`tournaments/${id}`)
+  tournamentRef.once('value')
+    .then((snap) => {
+      const tournamentData = snap.val()
+      const newTournamentData = {
+        ...tournamentData,
+        tournamentStarted: true
+      }
+      tournamentRef.set(newTournamentData)
+    })
 }
 
 export function retrieveTournamentData(id) {

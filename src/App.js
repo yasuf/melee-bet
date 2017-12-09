@@ -41,7 +41,7 @@ class App extends Component {
   checkLogInStatus = () => {
     checkFirebaseLogInStatus((user) => {
       if (user) {
-        this.setState({ loggedIn: true })
+        this.setState({ loggedIn: true, uid: user.uid })
       }
     })
   }
@@ -86,7 +86,7 @@ class App extends Component {
   }
 
   render() {
-    const { loggedIn } = this.state
+    const { loggedIn, uid } = this.state
     return (
       <div className="App">
         <Router>
@@ -98,6 +98,7 @@ class App extends Component {
             <Sidebar 
               isSidebarOpen={ this.state.isSidebarOpen }
               loggedIn={ this.state.loggedIn }
+              uid={ uid }
             >
             { this.state.loggedIn && this.renderLoggedInRoutes() }
             { !this.state.loggedIn && 

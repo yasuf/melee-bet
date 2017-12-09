@@ -50,15 +50,22 @@ class TournamentBracketContainer extends Component {
   }
 
   componentWillMount() {
+    this.fetchTournamentData()
+  }
+
+  fetchTournamentData = () => {
     const { id } = this.props.match.params
     retrieveTournamentData(id)
       .then(snap => {
         let tournament = snap.val()
-        tournament = this.populateMatchData(tournament)
+        tournament = { 
+          ...this.populateMatchData(tournament),
+          tournamentStarted: tournament.tournamentStarted
+        }
         this.setState({ tournamentData: tournament })
         this.fetchPrediction()
         this.fetchTournamentResults()
-      })
+      }) 
   }
 
   fetchPrediction = () => {
@@ -66,6 +73,7 @@ class TournamentBracketContainer extends Component {
     retrieveUserPrediction(id)
       .then(snap => {
         const predictions = snap.val()
+        if(!predictions) return
         this.setState({ 
           predictions,
           predictionSubmitted: true
@@ -77,16 +85,16 @@ class TournamentBracketContainer extends Component {
     const { id } = this.props.match.params
     retrieveTournamentResults(id).then((snap) => {
       const results = snap.val()
-      this.setState({ results: results}, this.calculateStore)
+      this.setState({ results: results}, this.calculateScore)
     })
   }
 
-  calculateStore = () => {
+  calculateScore = () => {
     const { predictions, results } = this.state
     let score = 0
+    if(!results) return
     const resultsObj = Object.values(results)[0]
     for(let key in resultsObj) {
-      debugger
       if(resultsObj[key].id === predictions[key].id && EXCLUDED_FROM_SCORE.indexOf(key) === -1) {
         score++
       }
@@ -130,7 +138,7 @@ class TournamentBracketContainer extends Component {
       prelosersQuartersTopA,
       prelosersQuartersTopB,
       prelosersQuartersBottomA,
-      prelosersQuartersBottomB,
+      prelosersQuartersBottomB
     }
   }
 
@@ -298,8 +306,10 @@ class TournamentBracketContainer extends Component {
 
   render() {
     const { predictionSubmitted, score } = this.state
-    if(!this.state.tournamentData) return null
-    const tournamentStarted = true
+    const { tournamentData } = this.state
+    if(!tournamentData) return null
+    const { tournamentStarted } = tournamentData
+    debugger
     const iconStyles = {
       verticalAlign: 'top'
     }

@@ -10,6 +10,7 @@ import SidebarItem from 'features/common/components/SidebarItem'
 class Sidebar extends Component {
 
   renderContent = () => {
+    const { uid } = this.props
     return (
       <ul className="sidebar-list">
         {/*
@@ -23,13 +24,16 @@ class Sidebar extends Component {
             My Tickets
           </SidebarItem>
         </Link>
+        { 
+          uid === '3iQPjaGTVNWR2GePegMMiM5r6Gf2' && 
+          <Link to="/admin">
+            <SidebarItem>
+              Admin
+            </SidebarItem>
+          </Link>
+        }
         {
         /* 
-        <Link to="/admin">
-          <SidebarItem>
-            Admin
-          </SidebarItem>
-        </Link>
         <Link to="/rankings">
           <li>
               Rankings
