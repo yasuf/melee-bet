@@ -25,7 +25,6 @@ export function retrieveAllPlayers() {
 }
 
 export function createTournament(tournament) {
-  debugger
   const tournamentRef = database().ref('tournaments').push()
   tournamentRef.set(tournament)
 }
@@ -70,8 +69,6 @@ export function sendPrediction(prediction, tournamentId) {
 }
 
 export function submitResults(results, tournamentId) {
-  debugger
   const resultRef = database().ref(`tournamentResults/${tournamentId}`).push()
   resultRef.set(results)
-
 }

@@ -87,7 +87,6 @@ class App extends Component {
 
   render() {
     const { loggedIn, facebookUid } = this.state
-    debugger
     return (
       <div className="App">
         <Router>
