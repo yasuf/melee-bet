@@ -5,6 +5,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "firebase": "4.7.0",
+    "lodash": "^4.17.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-icons": "^2.2.7",
