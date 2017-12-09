@@ -6,7 +6,6 @@ import { startTournament } from 'utils/firebase/db'
 class StartTournamentButton extends Component {
 
   startTournament = () => {
-    debugger
     const { tournament } = this.props
     startTournament(tournament.id)
   }

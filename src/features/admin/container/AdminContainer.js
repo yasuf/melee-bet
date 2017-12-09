@@ -14,7 +14,7 @@ class AdminContainer extends Component {
         className="admin-panel"
       >
         <h3>Click 'Start Tournament' to mark a tournament as started</h3>
-        <TournamentList alert={ () => { alert('yolo') } }>
+        <TournamentList>
           <StartTournamentButton />
         </TournamentList>
         <TournamentCreator />

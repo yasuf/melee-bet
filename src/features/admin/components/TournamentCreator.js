@@ -33,7 +33,8 @@ class TournamentCreator extends Component {
         for(var key in players) {
           playersArr.push({ id: key, ...players[key]})
         }
-        this.setState({ players: playersArr }) })
+        this.setState({ players: playersArr }) 
+      })
   }
 
   onPlayerChanged = (e, position) => {
@@ -88,28 +89,31 @@ class TournamentCreator extends Component {
           Create a tournament
         </h3>
         Tournament name: <input type="text" onChange={ this.onTournamentNameChange } />
-        <ul>
+        <table>
           { 
             bracketPositions.map((position) => {
               return (
-                <div>
-                  <label>{ position.name }</label>
-                  <select 
-                    onChange={ (e) => this.onPlayerChanged(e, position) }
-                    name={ position.name }
-                  >
-                    {
-                      players && players.map((player, i) => <option value={ i }>{ player.tag }</option> )
-                    }
-                  </select>
-                </div>
+                <tr>
+                  <td>{ position.name }</td>
+                  <td>
+                    <select 
+                      onChange={ (e) => this.onPlayerChanged(e, position) }
+                      name={ position.name }
+                    >
+                      <option selected>Select..</option>
+                      {
+                        players && players.map((player, i) => <option value={ i }>{ player.tag }</option> )
+                      }
+                    </select>
+                  </td>
+                </tr>
               )
             }) 
           }
           <button onClick={ this.createTournament }>
             Create tournament
           </button>
-        </ul>
+        </table>
       </div>
     )
   }

@@ -4,7 +4,7 @@ import './ticket-list.css'
 import { Link } from 'react-router-dom'
 
 import { getAllTournaments } from 'utils/firebase/db'
-import { toArray } from 'utils/toArray'
+import toArray from 'utils/toArray'
 
 class TicketList extends Component {
 

@@ -3,7 +3,7 @@ import { getUserId } from './firebase/auth'
 
 const { database } = firebase
 
-import { toArray } from 'utils/toArray'
+import toArray from 'utils/toArray'
 
 import { writePlayerData } from 'utils/firebase/db'
 
