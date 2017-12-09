@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactSidebar from 'react-sidebar'
 
 import { Link } from 'react-router-dom'
+import { fetchAdmins } from 'utils/firebase/db'
 
 import './sidebar.css'
 
@@ -9,8 +10,26 @@ import SidebarItem from 'features/common/components/SidebarItem'
 
 class Sidebar extends Component {
 
+  constructor() {
+    super()
+    this.state = {}
+  }
+  componentWillMount() {
+    this.fetchAdmins()
+  }
+
+  fetchAdmins = () => {
+    fetchAdmins().then((snap) => {
+      const admins = snap.val()
+      const { facebookUid } = this.props
+      if(admins.indexOf(facebookUid) > -1) {
+        this.setState({ isAdmin: true })
+      }
+    })
+  }
+
   renderContent = () => {
-    const { uid } = this.props
+    const { isAdmin } = this.state
     return (
       <ul className="sidebar-list">
         {/*
@@ -25,7 +44,7 @@ class Sidebar extends Component {
           </SidebarItem>
         </Link>
         { 
-          uid === '3iQPjaGTVNWR2GePegMMiM5r6Gf2' && 
+          isAdmin && 
           <Link to="/admin">
             <SidebarItem>
               Admin

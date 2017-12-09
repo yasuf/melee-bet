@@ -4,6 +4,10 @@ import { getUserId } from './auth'
 
 const { database } = firebase
 
+export function fetchAdmins() {
+  return database().ref('admins').once('value')
+}
+
 export function createPlayer(playerData) {
   const playerRef = database().ref('players').push()
   playerRef.set(playerData)
