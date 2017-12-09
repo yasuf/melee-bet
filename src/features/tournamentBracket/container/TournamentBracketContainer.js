@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import './tournament-bracket-container.css';
 import '../components/bracket.css'
 import * as FontAwesome from 'react-icons/lib/fa'
+import { isEmpty } from 'lodash'
 
 import BracketComponent from '../components/BracketComponent'
 import Match from '../components/Match'
@@ -31,15 +32,8 @@ const EXCLUDED_FROM_SCORE = [
 ]
 
 const defaultState = {
-  predictions: {
-    winnersFinals: {},
-    losersFinals: {},
-    winnersSemisTop: {},
-    winnersSemisBottom: {},
-    prelosersQuartersTop: {},
-    prelosersQuartersBottom: {},
-    key: 1
-  }
+  predictions: {},
+  score: 0
 }
 
 class TournamentBracketContainer extends Component {
@@ -92,7 +86,7 @@ class TournamentBracketContainer extends Component {
   calculateScore = () => {
     const { predictions, results } = this.state
     let score = 0
-    if(!results) return
+    if(!results || isEmpty(predictions)) return 0
     const resultsObj = Object.values(results)[0]
     for(let key in resultsObj) {
       if(resultsObj[key].id === predictions[key].id && EXCLUDED_FROM_SCORE.indexOf(key) === -1) {
@@ -309,7 +303,6 @@ class TournamentBracketContainer extends Component {
     const { tournamentData } = this.state
     if(!tournamentData) return null
     const { tournamentStarted } = tournamentData
-    debugger
     const iconStyles = {
       verticalAlign: 'top'
     }

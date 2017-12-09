@@ -3,7 +3,7 @@ import './TournamentResultsForm.css'
 
 import TournamentList from 'features/tickets/components/TournamentList'
 
-import { retrieveAllPlayers, getAllTournaments, sendPrediction } from 'utils/firebase/db'
+import { retrieveAllPlayers, getAllTournaments, submitResults } from 'utils/firebase/db'
 import toArray from 'utils/toArray'
 
 const matches = [
@@ -34,6 +34,17 @@ class TournamentResultsForm extends Component {
     this.getTournamentsList()
   }
 
+  onMatchChanged = (e, match) => {
+    this.setState({ [match]: e.target.value }, () => {
+      console.log(this.state)
+    })
+  }
+
+  onTournamentChange = (e) => {
+    const i = e.target.value
+    this.setState({ selectedTournament: i })
+  }
+
   getTournamentsList = () => {
     getAllTournaments().then((snapshot) => {
       const tournaments = toArray(snapshot.val())
@@ -50,13 +61,7 @@ class TournamentResultsForm extends Component {
   }
 
   submitResults = () => {
-    const tournamentId = this.props.match.params.id
-    const { tournamentData, predictions } = this.state
-    const {
-      losersQuartersTopA,
-      losersQuartersBottomA,
-      losersFinalsBottom
-    } = predictions
+    const { players, selectedTournament } = this.state
     const {
       grandFinals,
       winnersFinals,
@@ -71,23 +76,24 @@ class TournamentResultsForm extends Component {
       losersQuartersTopOpponent,
       losersQuartersBottomOpponent,
       losersFinalsOpponent
-    } = predictions
+    } = this.state
     const prediction = {
-      grandFinals,
-      winnersFinals,
-      winnersSemisTop,
-      winnersSemisBottom,
-      prelosersQuartersTop,
-      prelosersQuartersBottom,
-      losersQuartersTop,
-      losersQuartersBottom,
-      losersSemis,
-      losersFinals,
-      losersQuartersTopOpponent,
-      losersQuartersBottomOpponent,
-      losersFinalsOpponent
+      grandFinals: players[grandFinals],
+      winnersFinals: players[winnersFinals],
+      winnersSemisTop: players[winnersSemisTop],
+      winnersSemisBottom: players[winnersSemisBottom],
+      prelosersQuartersTop: players[prelosersQuartersTop],
+      prelosersQuartersBottom: players[prelosersQuartersBottom],
+      losersQuartersTop: players[losersQuartersTop],
+      losersQuartersBottom: players[losersQuartersBottom],
+      losersSemis: players[losersSemis],
+      losersFinals: players[losersFinals],
+      losersQuartersTopOpponent: players[losersQuartersTopOpponent],
+      losersQuartersBottomOpponent: players[losersQuartersBottomOpponent],
+      losersFinalsOpponent: players[losersFinalsOpponent]
     }
-    sendPrediction(prediction, tournamentId)
+    const tournamentId = this.state.tournaments[selectedTournament].id
+    submitResults(prediction, tournamentId)
   }
 
   render() {
@@ -101,10 +107,13 @@ class TournamentResultsForm extends Component {
           Submit the tournament results
         </h3>
         For tournament:
-          <select>
+          <select
+            onChange={ this.onTournamentChange }
+          >
+            <option>Select...</option>
             {
-              tournaments.map((tournament) => {
-                return <option>{ tournament.name }</option>
+              tournaments.map((tournament, i) => {
+                return <option value={ i }>{ tournament.name }</option>
               })
             }
           </select>
@@ -112,9 +121,9 @@ class TournamentResultsForm extends Component {
          {
             matches.map(match => {
               return (<tr className="match">
-                <td>{ match }   </td>
+                <td>{ match }</td>
                 <td>
-                  <select>
+                  <select onChange={ (e) => this.onMatchChanged(e, match)}>
                     <option selected>Select..</option>
                     {
                       players && players.map((player, i) => {
@@ -127,7 +136,7 @@ class TournamentResultsForm extends Component {
             })
          }
         </table>
-        <button onClick={ this.createTournament }>
+        <button onClick={ this.submitResults }>
           Submit results
         </button>
       </div>

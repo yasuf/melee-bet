@@ -65,3 +65,9 @@ export function sendPrediction(prediction, tournamentId) {
   userPredictionRef.set(prediction)
 }
 
+export function submitResults(results, tournamentId) {
+  debugger
+  const resultRef = database().ref(`tournamentResults/${tournamentId}`).push()
+  resultRef.set(results)
+
+}
