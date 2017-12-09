@@ -5,6 +5,7 @@ import TournamentList from 'features/tickets/components/TournamentList'
 import StartTournamentButton from 'features/admin/components/StartTournamentButton'
 import TournamentCreator from 'features/admin/components/TournamentCreator'
 import TournamentResultsForm from 'features/admin/components/TournamentResultsForm'
+import PlayerCreator from 'features/admin/components/PlayerCreator'
 
 class AdminContainer extends Component {
 
@@ -17,6 +18,7 @@ class AdminContainer extends Component {
         <TournamentList>
           <StartTournamentButton />
         </TournamentList>
+        <PlayerCreator />
         <TournamentCreator />
         <TournamentResultsForm />
       </div>

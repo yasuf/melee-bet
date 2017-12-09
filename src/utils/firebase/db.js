@@ -4,7 +4,7 @@ import { getUserId } from './auth'
 
 const { database } = firebase
 
-export function writePlayerData(playerData) {
+export function createPlayer(playerData) {
   const playerRef = database().ref('players').push()
   playerRef.set(playerData)
 }

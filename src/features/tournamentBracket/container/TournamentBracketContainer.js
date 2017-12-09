@@ -79,7 +79,9 @@ class TournamentBracketContainer extends Component {
     const { id } = this.props.match.params
     retrieveTournamentResults(id).then((snap) => {
       const results = snap.val()
-      this.setState({ results: results}, this.calculateScore)
+      if(results) {
+        this.setState({ results: results, tournamentFinished: true }, this.calculateScore)
+      }
     })
   }
 
@@ -299,7 +301,7 @@ class TournamentBracketContainer extends Component {
   }
 
   render() {
-    const { predictionSubmitted, score } = this.state
+    const { predictionSubmitted, score, tournamentFinished } = this.state
     const { tournamentData } = this.state
     if(!tournamentData) return null
     const { tournamentStarted } = tournamentData
@@ -311,14 +313,15 @@ class TournamentBracketContainer extends Component {
         <h2 onClick={ this.updateKey }>Create a fantasy bracket</h2>
         <p><b>Instructions:</b> Pick a winner for each match and submit once you fill the bracket completely.</p>
         { tournamentStarted && <div className="notification">
-            <FontAwesome.FaInfoCircle style={ iconStyles } /> Tournament has started!
+            <FontAwesome.FaInfoCircle style={ iconStyles } />
+            { tournamentFinished ? ' Tournament Finished!' : ' Tournament has started!' }
           </div> 
         }
         { predictionSubmitted && <div className="notification">
             <FontAwesome.FaInfoCircle style={ iconStyles } /> You already submitted your ticket
           </div> 
         }
-        { tournamentStarted && <div className="points">My Score: { `${score}/10` }</div> }
+        { tournamentFinished && <div className="points">My Score: { `${score}/10` }</div> }
         <div className={ classnames("winners-bracket", 'bracket', { disabled: tournamentStarted || predictionSubmitted }) }>
           <main id="tournament">
             <RoundGenerator 
