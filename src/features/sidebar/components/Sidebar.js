@@ -51,8 +51,7 @@ class Sidebar extends Component {
             </SidebarItem>
           </Link>
         }
-        {
-        /* 
+        { /*
         <Link to="/rankings">
           <li>
               Rankings

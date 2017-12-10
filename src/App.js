@@ -65,6 +65,7 @@ class App extends Component {
         const email = user.email
       })
       .catch((error) => {
+        console.log(error)
         const errorCode = error.code
       })
   }
