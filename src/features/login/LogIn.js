@@ -6,9 +6,11 @@ import './login.css'
 const LogIn = ({ openFacebookOAuth}) => { 
   return (
     <div>
-      <button className="fb-login" onClick={ openFacebookOAuth }>
+      <a href="http://localhost:8080/auth/facebook">
+      <button className="fb-login">
         <FontAwesome.FaFacebookSquare className="fb-logo" /> Log in with Facebook
-      </button>      
+      </button>
+      </a>
     </div>
   )
 }

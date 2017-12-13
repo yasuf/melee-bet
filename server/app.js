@@ -1,13 +1,22 @@
 const express = require('express')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv').config()
 const session = require('express-session')
 const passport = require('passport')
 const logger = require('morgan')
 const chalk = require('chalk')
 
-dotenv.load({ path: '.env.example' })
+const homeController = require('./controllers/homeController')
+
+const passportConfig = require('./config/passport')
 
 const app = express()
+
+require('./config/db')
+
+app.set('port', 8080)
+
+
+app.use(logger('dev'))
 
 app.use(session({
   resave: true,
@@ -15,16 +24,17 @@ app.use(session({
   secret: process.env.SESSION_SECRET
 }))
 
-app.set('port', 8080)
-
-app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
 
+
+app.get('/', homeController.index)
+
+app.post('/user/:id')
+
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }))
 app.get('/auth/facebook/callback', 
-  passport.authenticate('facebook', 
-  { failureRedirect: '/login' }),
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
   (req, res) => {
     res.redirect(req.session.returnTo || '/')
   }

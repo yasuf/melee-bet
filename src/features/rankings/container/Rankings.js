@@ -4,7 +4,6 @@ import './rankings.css'
 import { fakeTournamentData } from '../../../utils/firebase/fakeData'
 
 import { writePlayerData, writePlayersData } from '../../../utils/firebase/db'
-import { createTournament } from 'utils/tempScript'
 
 class Rankings extends Component {
 
@@ -14,7 +13,7 @@ class Rankings extends Component {
         <li>
           <a 
             href="#"
-            onClick={ () => { createTournament() } }
+            onClick={ () => { } }
           >
             Top 100
           </a>
