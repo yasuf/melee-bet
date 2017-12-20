@@ -1,5 +1,5 @@
 const express = require('express')
-const dotenv = require('dotenv').config()
+const dotenv = require('dotenv').config({ path: 'server/.env'})
 const session = require('express-session')
 const passport = require('passport')
 const logger = require('morgan')
@@ -15,7 +15,6 @@ require('./config/db')
 
 app.set('port', 8080)
 
-
 app.use(logger('dev'))
 
 app.use(session({
@@ -27,8 +26,9 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use(express.static('build'))
 
-app.get('/', homeController.index)
+// app.get('/', homeController.index)
 
 app.post('/user/:id')
 

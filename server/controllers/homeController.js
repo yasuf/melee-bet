@@ -1,6 +1,6 @@
 
 function index(req, res) {
-  res.json({ what: 'up' })
+  res.send('<h1>yolo h1</h1>')
 }
 
 module.exports = {
