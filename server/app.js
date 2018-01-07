@@ -3,7 +3,6 @@ const dotenv = require('dotenv').config({ path: 'server/.env'})
 const session = require('express-session')
 const passport = require('passport')
 const logger = require('morgan')
-const chalk = require('chalk')
 
 const homeController = require('./controllers/homeController')
 
@@ -12,8 +11,6 @@ const passportConfig = require('./config/passport')
 const app = express()
 
 require('./config/db')
-
-app.set('port', 8080)
 
 app.use(logger('dev'))
 
@@ -39,7 +36,4 @@ app.get('/auth/facebook/callback',
     res.redirect(req.session.returnTo || '/')
   }
 )
-
-app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'))
-})
+module.exports = app
