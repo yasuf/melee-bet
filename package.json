@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bull": "^3.3.8",
     "chalk": "^2.3.0",
     "classnames": "^2.2.5",
     "dotenv": "^4.0.0",
