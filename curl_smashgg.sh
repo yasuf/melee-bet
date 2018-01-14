@@ -3,7 +3,7 @@ https://api.smash.gg/tournament/desert-melee-4?\
 expand[]=event&expand[]=phase | \
 json_pp
 
-curl https://api.smash.gg/tournament/desert-melee-4?expand[]=event&expand[]=phase
+curl https://api.smash.gg/tournament/nimbus2?expand[]=event&expand[]=phase
 
 
 curl 
@@ -14,12 +14,12 @@ json_pp
 
 1. Get the tournament info i.e.
 ```
-curl -g "https://api.smash.gg/tournament/genesis-5?expand[]=event&expand[]=phase&expand[]=groups"
+curl -g "https://api.smash.gg/tournament/genesis-3?expand[]=event&expand[]=phase&expand[]=groups"
 ```
 2. In that response, find the "group" id for the corresponding top 8 "phase"
 3. Query to get the information about that phase\'s "group" i.e.
 ```
-curl -g "https://api.smash.gg/phase_group/323872?expand[]=sets&expand[]=entrants&expand[]=standings"
+curl -g "https://api.smash.gg/phase_group/15834?expand[]=sets&expand[]=entrants&expand[]=standings"
 ```
 4. Find the player's info in that same response
 

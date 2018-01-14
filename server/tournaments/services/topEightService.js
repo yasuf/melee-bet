@@ -4,13 +4,9 @@ const qs = require('qs');
 const encodingOptions = { encode: false, arrayFormat: 'brackets' };
 
 const SMASH_GG_MELEE_GAME_ID = 1;
-const SMASH_GG_TOP_EIGHT_PHASE_NAME = 'Top 8';
-const SMASH_GG_ERROR = 'Error fetching data from smash.gg'
-
-/* Public methods */
-function getCurrentTournaments () {
-  
-}
+const SMASH_GG_MELEE_SINGLES_TITLE = 'melee singles'
+const SMASH_GG_TOP_EIGHT_PHASE_NAME = 'top 8';
+const SMASH_GG_ERROR = 'Error fetching data from smash.gg';
 
 /**
  * Gets top eight data from smash.gg for a tournament
@@ -35,7 +31,7 @@ function getTopEightData(tournamentSlug) {
     const events = tournamentResponse.entities.event
     const phases = tournamentResponse.entities.phase
     const groups = tournamentResponse.entities.groups
-    const meleeEvent = getMeleeEvent(events)
+    const meleeEvent = getMeleeSinglesEvent(events)
     const topEightPhase = getTopEightPhase(phases, meleeEvent)
     const topEightGroup = getPhaseGroups(groups, topEightPhase)[0]
     return request({
@@ -45,27 +41,25 @@ function getTopEightData(tournamentSlug) {
   })
   .then(phaseResponse => {
     return new Promise((resolve, reject) => {
-      const players = phaseResponse.entities.player
-      const sets = phaseResponse.entities.sets
-      if(!players || !sets) reject(SMASH_GG_ERROR)
-      resolve(formatTopEightResult(players, sets))
-    }
+      const { player: players, sets, entrants } = phaseResponse.entities
+      if(!players || !sets || !entrants) reject(SMASH_GG_ERROR)
+      resolve(formatResults(players, sets, entrants))
+    })
   })
   .catch(error => {
     throw new Error(`${SMASH_GG_ERROR}: ${error}`)
   });
 }
 
-/* Private methods */
-
 /**
  * Gets the ID of the Smash Bros Melee event from a collection of smash.gg events
  * @param {Object[]} events - Array of events from Smash.gg's API
  * @return {Object} returns the Smash Bros Melee game event
  */
-function getMeleeEvent(events) {
+function getMeleeSinglesEvent(events) {
   return events.find(currentEvent => {
-    return currentEvent.videogameId === SMASH_GG_MELEE_GAME_ID
+    return currentEvent.videogameId === SMASH_GG_MELEE_GAME_ID &&
+      currentEvent.name.toLowerCase() === SMASH_GG_MELEE_SINGLES_TITLE
   })
 }
 
@@ -77,7 +71,7 @@ function getMeleeEvent(events) {
  */
 function getTopEightPhase(phases, event) {
   return phases.find(phase => {
-    return phase.eventId === event.id && phase.name === SMASH_GG_TOP_EIGHT_PHASE_NAME
+    return phase.eventId === event.id && phase.name.toLowerCase() === SMASH_GG_TOP_EIGHT_PHASE_NAME
   })
 }
 
@@ -95,28 +89,40 @@ function getPhaseGroups(groups, phase) {
 
 
 /**
- * Formats a top eight bracket
- * @param {Object[]} players - Collection of players of a given top 8 bracket
- * @param {Object[]} sets - Collection of set results for a given top 8 bracket
- * @returns {Array} Results for a top eight bracket from smash.gg
+ * Formats a collection of sets, players and entrants into a more manageable structure
+ * @param {Object[]} players - Collection of players
+ * @param {Object[]} sets - Collection of set results
+ * @param {Object[]} entrants - Collection of entrants' data
+ * @returns {Array} Formatted results of smash.gg's data
  */
-function formatTopEightResult(players, sets) {
-  const topEightResult = []
+function formatResults(players, sets, entrants) {
+  const formattedData = []
   const playersHash = {}
+  const entrantsHash = {}
   players.forEach(player => {
     playersHash[player.entrantId] = player
   })
+  entrants.forEach(entrant => {
+    entrantsHash[entrant.id] = entrant
+  })
   sets.forEach(set => {
-    topEightResult.push({
-      set: set
-      player1: playersHash[set.entrant1Id],
-      player2: playersHash[set.entrant2Id]
+    const { entrant1Id, entrant2Id } = set
+    formattedData.push({
+      set: set,
+      player1: playersHash[entrant1Id],
+      player2: playersHash[entrant2Id],
+      entrant1: entrantsHash[entrant1Id],
+      entrant2: entrantsHash[entrant2Id]
     })
   })
-  return topEightResult
+  return formattedData
 }
 
 module.exports = {
-  getTopEightData
+  getTopEightData,
+  getMeleeSinglesEvent,
+  getTopEightPhase,
+  getPhaseGroups,
+  formatResults
 };
 

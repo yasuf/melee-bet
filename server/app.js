@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv').config({ path: 'server/.env'})
 const session = require('express-session')
 const passport = require('passport')
+const bodyParser = require('body-parser')
 const logger = require('morgan')
 
 const homeController = require('./controllers/homeController')
@@ -23,9 +24,10 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static('build'))
 
-// app.get('/', homeController.index)
+app.use(require('./api'))
 
 app.post('/user/:id')
 
