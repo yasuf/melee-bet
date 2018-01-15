@@ -8,6 +8,13 @@ const SMASH_GG_MELEE_SINGLES_TITLE = 'melee singles'
 const SMASH_GG_TOP_EIGHT_PHASE_NAME = 'top 8';
 const SMASH_GG_ERROR = 'Error fetching data from smash.gg';
 
+function trackTournament(tournamentSlug) {
+  /*
+    1. Get top 8 results
+    2. Update what we show to users
+  */
+}
+
 /**
  * Gets top eight data from smash.gg for a tournament
  * @async

@@ -6,7 +6,7 @@ const TOURNAMENTS_BASE = '/tournament'
 
 /**
  * Get top 8 information from smash.gg's API
- * @route /tournament
+ * @route {GET} /tournament
  * @queryparam {String} [tournament_slug] Tournament slug to retrieve, i.e. 'genesis-3'
  */
 router.get('/tournament', (req, res, next) => {
@@ -20,5 +20,20 @@ router.get('/tournament', (req, res, next) => {
     })
 })
 
+/**
+ * Start tracking a tournament in our servers
+ * @route {POST} /tournaments/tracking
+ * @bodyparam {String} tournament_slug Slug of the tournament to start tracking
+ */
+router.post('/tracking', (req, res, next) => {
+  const { tournament_slug } = req.body
+  topEightService.trackTournament(tournament_slug)
+    .then(() => {
+      res.json({ message: 'Success' })
+    })
+    .catch(error => {
+      res.json(error)
+    })
+})
 
 module.exports = router
