@@ -23,7 +23,7 @@ function getTopEightData(tournamentSlug) {
     { expand: ['sets', 'entrants', 'standings'] },
     encodingOptions
   );
-  return request({
+  return request.get({
     url: `${smashGGBase}/tournament/${tournamentSlug}?${tournamentExpands}`,
     json: true
   })
@@ -34,7 +34,7 @@ function getTopEightData(tournamentSlug) {
     const meleeEvent = getMeleeSinglesEvent(events)
     const topEightPhase = getTopEightPhase(phases, meleeEvent)
     const topEightGroup = getPhaseGroups(groups, topEightPhase)[0]
-    return request({
+    return request.get({
       url: `${smashGGBase}/phase_group/${topEightGroup.id}?${phaseGroupExpands}`,
       json: true
     })
