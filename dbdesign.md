@@ -6,31 +6,27 @@
 * name              string \*comes from facebook
 * email             string \*comes from facebook
 
-### User points wallet
+### Predictions table
 * id                int
-* user_id           int
-* amount            int
+* user_id           int //user who made the prediction
+* entrant_id        int //smash.gg's entrantId
+* set_id            int //smash.gg's setId
 
 ### Admin table
 * id                int
 * user_id           int  
 
-### Open Bets table
+### Tournament_cubes table
 * id                int
-* user_id           int  foreign key
-* match_id 2        int  foreign key
-* points_amount     int  \* bet amount
+* user_id           int
+* tournament_id     int // smash.gg's tournament_id
+* count             int // Number of cubes
 
-### Players table
-* id                int
-* gamer_tag         string
-
-### Match table
-* id                int
-* tournament_id     int  foreign key
-* player1_id        int  foreign key
-* player2_id        int  foreign key
-* winner_id         int  foreign key
+### Tournaments table
+* id
+* tournament_id     int // smash.gg's tournament_id
+* name              string // smash.gg's name
+* status            int // active, finished
 
 ### BetsHistory table
 * id                int
@@ -39,7 +35,3 @@
 * opponent_id       int  foreign key
 * won_bet           bool \*do we need this?
 * tournament_id     int  foreign key
-
-### Tournaments table
-* id               int 
-* name             string

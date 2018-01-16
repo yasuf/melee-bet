@@ -36,6 +36,11 @@ const fakeEntrants = [
   { id: 2, playerId: 2 },
   { id: 3, playerId: 3 },
 ];
+const fakeTournamentInfo = {
+  endAt: 123123123,
+  name: 'Genesis 3',
+  id: 10
+}
 const fakeTournamentData = {
   entities: {
     event: fakeEvents,
@@ -51,13 +56,24 @@ const fakePhaseData = {
   },
 };
 
-jest.mock('request-promise-native');
-const request = require('request-promise-native');
 
 describe('topEightService', () => {
+  describe('trackTournament', () => {
+    it('adds the tournament info to the database', () => {
+      jest.mock('request-promise-native');
+      const request = require('request-promise-native');
+      request.get = jest.fn().mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          resolve(fakeTournamentInfo)
+        })
+      })
+    })
+  })
 
   describe('getTopEightData', () => {
     it('returns a promise that contains data about the players, sets and entrants', () => {
+      jest.mock('request-promise-native');
+      const request = require('request-promise-native');
       request.get = jest.fn()
         .mockImplementationOnce(() => {
           return new Promise((resolve, reject) => {
@@ -68,8 +84,9 @@ describe('topEightService', () => {
           return new Promise((resolve, reject) => {
             resolve(fakePhaseData)
           })
-        })
-      topEightService.getTopEightData('genesis-3')
+        });
+      const tournamentExpands = ['event', 'phase', 'groups']
+      topEightService.getTopEightData('genesis-3', tournamentExpands)
         .then(data => {
           expect(data).toEqual(topEightService.formatResults(fakePlayers, fakeSets, fakeEntrants));
         })

@@ -11,7 +11,8 @@ const TOURNAMENTS_BASE = '/tournament'
  */
 router.get('/tournament', (req, res, next) => {
   const { tournament_slug } = req.query
-  topEightService.getTopEightData(tournament_slug)
+  const tournamentExpands = ['event', 'phase', 'groups']
+  topEightService.getTopEightData(tournament_slug, tournamentExpands)
     .then(topEightData => {
       res.json(topEightData)
     })

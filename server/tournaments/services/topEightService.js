@@ -2,17 +2,39 @@ const request = require('request-promise-native');
 const smashGGBase = 'https://api.smash.gg';
 const qs = require('qs');
 const encodingOptions = { encode: false, arrayFormat: 'brackets' };
+const { Tournament, STATUS } = require('../models/Tournament')
 
 const SMASH_GG_MELEE_GAME_ID = 1;
 const SMASH_GG_MELEE_SINGLES_TITLE = 'melee singles'
 const SMASH_GG_TOP_EIGHT_PHASE_NAME = 'top 8';
 const SMASH_GG_ERROR = 'Error fetching data from smash.gg';
 
+/**
+ * Start tracking a tournament results to update users scores
+ * @param {string} tournamentSlug slug of the tournament to start tracking
+ */
 function trackTournament(tournamentSlug) {
-  /*
-    1. Get top 8 results
-    2. Update what we show to users
-  */
+  getTournamentData(tournamentSlug, []).then(data => {
+    const { id, name } = data.entities.tournament
+    Tournament.insert({ name, tournament_id: id, status: STATUS.active })
+  })
+}
+
+/**
+ * Fetch information about a tournament from smash.gg
+ * @param {string} tournamentSlug slug to get information about
+ * @param {Array} expands Expands to get extra information about the tournament from smash.gg
+ * @return {Promise} Promise resolving with the information about the tournament
+ */
+function getTournamentData(tournamentSlug, expands) {
+  const expandsString = qs.stringify(
+    { expand: expands },
+    encodingOptions
+  );
+  return request.get({
+    url: `${smashGGBase}/tournament/${tournamentSlug}?${expandsString}`,
+    json: true,
+  })
 }
 
 /**
@@ -21,20 +43,12 @@ function trackTournament(tournamentSlug) {
  * @param {string} tournamentSlug slug of the tournament to retrieve information about
  * @returns {Promise<Array>} Returns a Promise that resolves with an array with the top 8 information
  */
-function getTopEightData(tournamentSlug) {
-  const tournamentExpands = qs.stringify(
-    { expand: ['event', 'phase', 'groups'] }, 
-    encodingOptions
-  );
+function getTopEightData(tournamentSlug, tournamentExpands) {
   const phaseGroupExpands = qs.stringify(
     { expand: ['sets', 'entrants', 'standings'] },
     encodingOptions
   );
-  return request.get({
-    url: `${smashGGBase}/tournament/${tournamentSlug}?${tournamentExpands}`,
-    json: true
-  })
-  .then(tournamentResponse => {
+  return getTournamentData(tournamentSlug, tournamentExpands).then(tournamentResponse => {
     const events = tournamentResponse.entities.event
     const phases = tournamentResponse.entities.phase
     const groups = tournamentResponse.entities.groups
@@ -115,7 +129,7 @@ function formatResults(players, sets, entrants) {
   sets.forEach(set => {
     const { entrant1Id, entrant2Id } = set
     formattedData.push({
-      set: set,
+      set,
       player1: playersHash[entrant1Id],
       player2: playersHash[entrant2Id],
       entrant1: entrantsHash[entrant1Id],
@@ -126,6 +140,8 @@ function formatResults(players, sets, entrants) {
 }
 
 module.exports = {
+  trackTournament,
+  getTournamentData,
   getTopEightData,
   getMeleeSinglesEvent,
   getTopEightPhase,
